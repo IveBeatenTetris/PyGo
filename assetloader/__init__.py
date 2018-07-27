@@ -3,5 +3,7 @@ import os
 
 from .utils import *
 from .maps import *
+from .tilesets import *
+from .tiles import *
 
-__all__ = ["utils", "maps"]
+__all__ = ["utils", "maps", "tilesets", "tiles"]

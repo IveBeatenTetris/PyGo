@@ -5,7 +5,7 @@ default = {
     #"size": (1200, 650),
     "size": (320, 240),
     "caption": "project",
-    "fps": 15,
+    "fps": 30,
     "scale": 1
 }
 

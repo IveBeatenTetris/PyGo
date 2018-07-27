@@ -18,7 +18,7 @@ class Map:
         self.tiles = self.__createTileList()
         self.size = (config["width"], config["height"])# tuple
         self.layers = self.__createLayers()# list
-        self.preview = self.layers[0]# pygame surface
+        self.preview = self.__createPreview()# pygame surface
     def __str__(self):
         """String representation."""
         name = self.config["name"]
@@ -36,7 +36,7 @@ class Map:
             config = loadJSON(path)
             tilesets.append(Tileset(config))
 
-        return tilesets
+        return tilesets# list
     def __createTileList(self):
         """Combine all Tile objects from each Tileset and return them in a
         list."""
@@ -47,18 +47,17 @@ class Map:
                 tiles.append(tile)
 
 
-        return tiles
+        return tiles# list
     def __createLayers(self):# list
         """Create a list of pygame-surface layers and return it."""
         width = self.size[0] * self.tilesize[0]
         height = self.size[1] * self.tilesize[1]
-        preview = pg.Surface((width, height))
         layers = []
 
         for each in self.config["layers"]:
             width = each["width"] * self.tilesize[0]
             height = each["height"] * self.tilesize[1]
-            layer = pg.Surface((width, height))
+            layer = pg.Surface((width, height), pg.SRCALPHA, 32)
 
             # drawing tiles on each layer
             i = 0
@@ -72,10 +71,23 @@ class Map:
                     else:
                         layer.blit(self.tiles[each["data"][i] - 1].image, (x, y))
                     i = i + 1
-                    
+
             layers.append(layer)
 
         return layers
+    def __createPreview(self):# pygame surface
+        """Create a preview of the rendered map by drawing every layer on a
+        pygame surface."""
+        width = self.size[0] * self.tilesize[0]
+        height = self.size[1] * self.tilesize[1]
+        preview = pg.Surface((width, height))
+
+        for layer in self.layers:
+            preview.blit(layer, (0, 0))
+        #preview.blit(self.layers[0], (0, 0))
+        #preview.blit(self.layers[1], (0, 0))
+
+        return preview
 
 def load(name):
     """Load a Map object and return it."""

@@ -84,8 +84,6 @@ class Map:
 
         for layer in self.layers:
             preview.blit(layer, (0, 0))
-        #preview.blit(self.layers[0], (0, 0))
-        #preview.blit(self.layers[1], (0, 0))
 
         return preview
 

@@ -1,6 +1,6 @@
 import pygame as pg
 from .config import PATH
-from .utils import loadJSON
+from .utils import loadJSON, perPixelAlpha
 from .tileset import Tileset
 
 class Map(pg.Surface):
@@ -21,6 +21,8 @@ class Map(pg.Surface):
                 self.size[1] * self.tilesize[1]
             )
         )
+        self.rect = self.get_rect()
+
         for each in self.layers:
             self.blit(self.layers[each], (0, 0))
     def __repr__(self):# str
@@ -55,11 +57,13 @@ class Map(pg.Surface):
                 for line in range(each["width"]):
                     x = line * self.tilesize[0]
                     # clean tile
-                    if each["data"][i] == 0:
-                        pass
-                    else:
+                    if each["data"][i] != 0:
                         layer.blit(self.tiles[each["data"][i] - 1].image, (x, y))
                     i = i + 1
+
+            # exception for layer 'shadows'
+            if each["name"] == "shadows":
+                layer = perPixelAlpha(layer, 50)
 
             layers.update({each["name"]: layer})
 

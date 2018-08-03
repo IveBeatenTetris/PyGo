@@ -23,6 +23,7 @@ class Map(pg.Surface):
         )
         self.rect = self.get_rect()
 
+        # blit each surface to a layer
         for each in self.layers:
             self.blit(self.layers[each], (0, 0))
     def __repr__(self):# str

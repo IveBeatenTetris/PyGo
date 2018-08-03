@@ -3,11 +3,12 @@ from .config import PATH
 import os
 
 class AssetLoader:
-    """."""
+    """Load assets in json format and append them to the assetloader."""
     def __init__(self):
         """Constructor."""
-        self.tilesets = self.getTilesets()# dict
-        self.maps = self.getMaps()# dict
+        self.identities = self.get("identities")# dict
+        self.tilesets = self.get("tilesets")# dict
+        self.maps = self.get("maps")# dict
     def __repr__(self):# str
         """String representation."""
         return "<AssetLoader>"
@@ -23,23 +24,13 @@ class AssetLoader:
                     list.append(config)
 
         return list
-    def getMaps(self):# dict
-        """."""
-        maps = {}
+    def get(self, assetname):# dict
+        """Load a json config from the given assets' name path."""
+        collection = {}
 
-        assets = self.loadAssets(PATH["maps"])
-
-        for asset in assets:
-            maps.update({asset["name"]: asset})
-
-        return maps
-    def getTilesets(self):# dict
-        """."""
-        tilesets = {}
-
-        assets = self.loadAssets(PATH["tilesets"])
+        assets = self.loadAssets(PATH[assetname])
 
         for asset in assets:
-            tilesets.update({asset["name"]: asset})
+            collection.update({asset["name"]: asset})
 
-        return tilesets
+        return collection

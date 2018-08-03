@@ -1,4 +1,5 @@
 import pygame as pg
+from .utils import getFrames
 from .config import PATH
 from .tile import Tile
 
@@ -33,25 +34,11 @@ class Tileset(pg.Surface):
         """Return a list of all tiles in the given tileset image."""
         tilelist = []
 
-        rows = int(self.image.get_rect().height / self.tilesize[1])
-        lines = int(self.image.get_rect().width / self.tilesize[0])
-        rect = pg.Rect((0, 0), self.tilesize)
-
-        i = 0
-        for row in range(rows):
-            y = row * self.tilesize[1]
-            rect.top = y
-            for line in range(lines):
-                x = line * self.tilesize[0]
-                rect.left = x
-
-                self.image.set_clip(rect)
-                clip = self.image.subsurface(self.image.get_clip())
-                config = {
-                    "image": clip,
-                    "id": i
-                    }
-                tilelist.append(Tile(config))
-                i = i + 1
+        for i, each in enumerate(getFrames(self.image, self.tilesize), 0):
+            config = {
+                "image": each,
+                "id": i
+                }
+            tilelist.append(Tile(config))
 
         return tilelist

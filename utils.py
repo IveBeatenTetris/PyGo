@@ -12,6 +12,18 @@ def loadJSON(path):# dict
 
     return js
 # pygame
+def draw(object, destination, position=(0, 0)):# pygame surface
+    """Drawing a single or multiple objects to the destination surface. Then
+    return it."""
+    if object.__class__.__bases__[0] is pg.Surface or type(object) is pg.Surface:
+        destination.blit(object, position)
+    elif object.__class__.__bases__[0] is pg.sprite.Sprite:
+        destination.blit(object.image, position)
+    elif object.__class__ is pg.sprite.Group:
+        for sprite in object:
+            destination.blit(sprite.image, sprite.rect.topleft)
+
+    return destination
 def perPixelAlpha(image , opacity=255):# pygame surface
     """Convert per pixel alpha from image."""
     image.convert_alpha()

@@ -1,6 +1,7 @@
 from .utils import *
 from. config import *
 from .window import Window
+from .camera import Camera
 from .assetloader import AssetLoader
 from .player import Player
 from .map import Map

@@ -1,4 +1,5 @@
 import pygame as pg
+from .utils import draw
 import sys
 
 default = {
@@ -21,13 +22,7 @@ class Window:
         self.fps = default["fps"]
     def draw(self, object, position=(0, 0)):
         """Draw everything to the window's surface."""
-        if object.__class__.__bases__[0] is pg.Surface or type(object) is pg.Surface:
-            self.display.blit(object, position)
-        elif object.__class__.__bases__[0] is pg.sprite.Sprite:
-            self.display.blit(object.image, position)
-        elif object.__class__ is pg.sprite.Group:
-            for sprite in object:
-                self.display.blit(sprite.image, sprite.rect.topleft)
+        draw(object, self.display, position)
     def resize(self, size):
         """Resize the window and update it's rect."""
         self.display = pg.display.set_mode(size, pg.RESIZABLE)

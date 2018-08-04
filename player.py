@@ -15,3 +15,9 @@ class Player(pg.sprite.Sprite):
         self.framesize = config["framesize"]# tuple
         self.frames = getFrames(self.rawimage, self.framesize)# list
         self.image = self.frames[0]# pygame surface
+        self.rect = self.image.get_rect()# pygame rect
+        self.speed = 2# int
+    def move(self, pos):
+        """Moving the player to given coordinates."""
+        x, y = self.rect.topleft
+        self.rect.topleft = (x + pos[0], y + pos[1])

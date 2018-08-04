@@ -6,7 +6,7 @@ default = {
     #"size": (1200, 650),
     "size": (320, 240),
     "caption": "project",
-    "fps": 30,
+    "fps": 60,
     "scale": 1
 }
 
@@ -18,6 +18,7 @@ class Window:
         self.display = pg.display.set_mode(default["size"], pg.RESIZABLE)
         self.rect = self.display.get_rect()
         pg.display.set_caption(default["caption"])
+        #self.createIcon()
         self.clock = pg.time.Clock()
         self.fps = default["fps"]
     def draw(self, object, position=(0, 0)):

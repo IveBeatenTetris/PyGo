@@ -9,10 +9,12 @@ class Camera(pg.Surface):
         self.size = config["size"]# tuple
         pg.Surface.__init__(self, self.size, pg.SRCALPHA, 32)# pygame Surface
         self.drawBorder()
+        self.scaled = pg.transform.scale(self , (640, 480))
     def capture(self, object, position=(0, 0)):
         """Drawing a surface to the Camera."""
         draw(object, self, position)
         self.drawBorder()
+        self.scaled = pg.transform.scale(self , (640, 480))
     def drawBorder(self):
         """Drawing a border to visualize the cameras' space."""
         pg.draw.lines(
@@ -26,5 +28,5 @@ class Camera(pg.Surface):
                 (self.size[0] - 1, 0),
                 (0, 0)
             ],
-            2
+            1
         )

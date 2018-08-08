@@ -18,6 +18,18 @@ def loadJSON(path):# dict
         js.update({"filepath": path})
 
     return js
+# dictionary operations
+def validateDict(config={}, defaults={}):# dict
+    """Validate a dictionary by given defaults. Params must be dict."""
+    validated = {}
+
+    for each in defaults:
+        try:
+            validated[each] = config[each]
+        except KeyError:
+            validated[each] = defaults[each]
+
+    return validated
 # pygame
 def createIcon(path):
     """Create an icon for the window from a png file."""
@@ -27,7 +39,12 @@ def createIcon(path):
 def draw(object, destination, position=(0, 0)):# pygame surface
     """Drawing a single or multiple objects to the destination surface. Then
     return it."""
-    if object.__class__.__bases__[0] is pg.Surface or type(object) is pg.Surface:
+    if type(position) is pg.Rect:
+        position = position.topleft
+
+    if type(object) is tuple:
+        destination.fill(object, destination.get_rect())
+    elif object.__class__.__bases__[0] is pg.Surface or type(object) is pg.Surface:
         destination.blit(object, position)
     elif object.__class__.__bases__[0] is pg.sprite.Sprite:
         destination.blit(object.image, position)
@@ -36,6 +53,26 @@ def draw(object, destination, position=(0, 0)):# pygame surface
             destination.blit(sprite.image, sprite.rect.topleft)
 
     return destination
+def drawBorder(rect, config):# pygame surface
+    """Drawing a border to a surface and return it."""
+    size, line, color = config
+    surface = pg.Surface(rect.size, pg.SRCALPHA)
+
+    pg.draw.lines(
+        surface,
+        color,
+        False,
+        [
+            (0, 0),
+            (0, rect.height - 1),
+            (rect.width - 1, rect.height - 1),
+            (rect.width - 1, 0),
+            (0, 0)
+        ],
+        size
+    )
+
+    return surface
 def perPixelAlpha(image , opacity=255):# pygame surface
     """Convert per pixel alpha from image."""
     image.convert_alpha()
@@ -66,3 +103,36 @@ def getFrames(image, framesize):# list
             frames.append(clip)
 
     return frames
+def scale(surface, factor):
+    """."""
+    width = surface.get_rect().width * factor
+    height = surface.get_rect().height * factor
+
+    scaled = pg.transform.scale(surface, (width, height))
+
+    return scaled
+def repeatX(image, parent, pos=(0, 0)):# pygame surface
+    """Return a surface with x-line repeated image blitting."""
+    child = image.get_rect()
+    surface = pg.Surface(parent.size, pg.SRCALPHA)
+    for each in range(int(parent.width / child.width) + child.width):
+        surface.blit(image, (each * child.width, pos[0]))
+
+    return surface
+def repeatY(image, parent, pos=(0, 0)):# pygame surface
+    """Return a surface with y-line repeated image blitting."""
+    child = image.get_rect()
+    surface = pg.Surface(parent.size, pg.SRCALPHA)
+    for each in range(int(parent.height / child.height) + child.height):
+        surface.blit(image, (pos[1], each * child.height))
+
+    return surface
+def repeatXY(image, parent, bg_position=(0, 0)):# pygame surface
+    """Return a surface with x and y-line repeated image blitting."""
+    child = image.get_rect()
+    surface = pg.Surface(parent.size, pg.SRCALPHA)
+    for j in range(int(parent.width / child.width) + child.width):
+        for i in range(int(parent.height / child.height) + child.height):
+            surface.blit(image, (j * child.width, i * child.width))
+
+    return surface

@@ -6,6 +6,8 @@ class AssetLoader:
     """Load assets in json format and append them to the assetloader."""
     def __init__(self):
         """Constructor."""
+        self.path = PATH["assets"]
+        self.images = self.get("images")# dict
         self.identities = self.get("identities")# dict
         self.tilesets = self.get("tilesets")# dict
         self.maps = self.get("maps")# dict
@@ -22,10 +24,18 @@ class AssetLoader:
                 if each.split(".")[1] == "json":
                     config = loadJSON(dirs[0] + "\\" + each)
                     list.append(config)
-
+                # if directory has an image
+                elif each.split(".")[1] == "png":
+                    config = {
+                        "name": each.split(".")[0],
+                        "filename": each,
+                        "type": "image",
+                        "filepath": dirs[0]
+                    }
+                    list.append(config)
         return list
     def get(self, assetname):# dict
-        """Load a json config from the given assets' name path."""
+        """Load a json config from the given asset's name path."""
         collection = {}
 
         assets = self.loadAssets(PATH[assetname])

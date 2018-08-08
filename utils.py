@@ -101,12 +101,13 @@ def getFrames(image, framesize):# list
             clip = image.subsurface(image.get_clip())
 
             frames.append(clip)
+    del(clip, rect)
 
     return frames
 def scale(surface, factor):
     """."""
-    width = surface.get_rect().width * factor
-    height = surface.get_rect().height * factor
+    width = int(surface.get_rect().width * factor)
+    height = int(surface.get_rect().height * factor)
 
     scaled = pg.transform.scale(surface, (width, height))
 

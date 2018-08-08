@@ -18,12 +18,12 @@ class Player(pg.sprite.Sprite):
         self.rect = self.image.get_rect()# pygame rect
         self.speed = 2# int
         # drawing a border around the player
-        #self.image.blit(drawBorder(self.rect, [1, "solid", (255, 0, 0)]), (0, 0))
+        self.image.blit(drawBorder(self.rect, [1, "solid", (255, 0, 0)]), (0, 0))
     def __repr__(self):# str
         """String representation."""
         return "<Player({0})".format(str(self.rect.topleft))
     def move(self, pos):
         """Moving the player to given coordinates."""
-        #x, y = self.rect.topleft
-        #self.rect.topleft = (x + pos[0], y + pos[1])
-        self.rect.topleft = pos
+        x, y = self.rect.topleft
+        self.rect.topleft = (x + pos[0], y + pos[1])
+        #self.rect.topleft = pos

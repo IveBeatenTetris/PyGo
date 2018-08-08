@@ -28,7 +28,7 @@ class Map(pg.Surface):
             self.blit(self.layers[each], (0, 0))
     def __repr__(self):# str
         """String representation."""
-        return "<Map" + str(self.size) + ">"
+        return "<Map('{0}', {1})>".format(self.name, str(self.size))
     def __createTilesets(self):# dict
         """Create a dict of tileset-objects from the config and return it."""
         tilesets = {}

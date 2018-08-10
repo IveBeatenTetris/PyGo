@@ -26,4 +26,3 @@ class Player(pg.sprite.Sprite):
         """Moving the player to given coordinates."""
         x, y = self.rect.topleft
         self.rect.topleft = (x + pos[0], y + pos[1])
-        #self.rect.topleft = pos

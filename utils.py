@@ -51,6 +51,9 @@ def draw(object, destination, position=(0, 0)):# pygame surface
     elif object.__class__ is pg.sprite.Group:
         for sprite in object:
             destination.blit(sprite.image, sprite.rect.topleft)
+    elif type(object) is list:
+        for each in object:
+            draw(each, destination, position)
 
     return destination
 def drawBorder(rect, config):# pygame surface

@@ -59,7 +59,18 @@ def windowIcon(path):
 def draw(object, destination, position=(0, 0)):# pygame surface
     """Drawing a single or multiple objects to the destination surface. Then
     return it."""
-    if type(position) is pg.Rect:
+    if type(position) is str:
+        if position == "center":
+            try:
+                osize = object.get_rect().size
+            except AttributeError:
+                osize = object.image.get_rect().size
+            dsize = destination.get_rect().size
+
+            x = int(dsize[0] / 2) - int(osize[0] / 2)
+            y = int(dsize[1] / 2) - int(osize[1] / 2)
+            position = (x, y)
+    elif type(position) is pg.Rect:
         position = position.topleft
 
     if type(object) is tuple:

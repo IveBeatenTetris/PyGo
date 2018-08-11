@@ -1,6 +1,22 @@
-import json
+# dependencies
+import json, os
 import pygame as pg
-
+# project and library pathes
+PATH = {
+    "go": os.path.dirname(__file__),
+    "sysimg": os.path.dirname(__file__) + "\\images",
+    "root": os.getcwd(),
+    "assets" : os.getcwd() + "\\assets",
+    "images" : os.getcwd() + "\\assets\\images",
+    "maps": os.getcwd() + "\\assets\\maps",
+    "tilesets": os.getcwd() + "\\assets\\tilesets",
+    "identities": os.getcwd() + "\\assets\\identities"
+}
+IMG = {
+    "noimage": pg.image.load(PATH["sysimg"] + "\\noimage.png"),
+    "windowbg": pg.image.load(PATH["sysimg"] + "\\bg01.png"),
+    "windowicon": pg.image.load(PATH["sysimg"] + "\\ente.png")
+}
 # console
 def prettyPrint(data, sort=False, tabs=4):
     """Pretty print dict."""
@@ -31,9 +47,13 @@ def validateDict(config={}, defaults={}):# dict
 
     return validated
 # pygame
-def createIcon(path):
+def windowIcon(path):
     """Create an icon for the window from a png file."""
-    icon = pg.image.load(path)
+    if type(path) is pg.Surface:
+        icon = path
+    elif type(path) is str:
+        icon = pg.image.load(path)
+
     icon = pg.transform.scale(icon , (32 , 32))
     pg.display.set_icon(icon)
 def draw(object, destination, position=(0, 0)):# pygame surface

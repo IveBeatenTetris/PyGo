@@ -1,5 +1,5 @@
-from .utils import loadJSON
-from .config import PATH
+from .utils import PATH, loadJSON
+#from .config import PATH
 import os
 
 class AssetLoader:

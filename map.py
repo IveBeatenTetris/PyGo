@@ -1,6 +1,6 @@
 import pygame as pg
-from .config import PATH
-from .utils import loadJSON, perPixelAlpha
+#from .config import PATH
+from .utils import PATH, loadJSON, perPixelAlpha
 from .tileset import Tileset
 
 class Map(pg.Surface):

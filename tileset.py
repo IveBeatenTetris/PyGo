@@ -1,6 +1,6 @@
 import pygame as pg
-from .utils import getFrames
-from .config import PATH
+from .utils import PATH, getFrames
+#from .config import PATH
 from .tile import Tile
 
 class Tileset(pg.Surface):

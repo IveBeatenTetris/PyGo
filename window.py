@@ -1,4 +1,7 @@
 from .utils import (
+    PATH,
+    IMG,
+    windowIcon,
     draw,
     validateDict,
     repeatX,
@@ -6,7 +9,7 @@ from .utils import (
     repeatXY,
     scale
     )
-from .config import PATH, IMG
+#from .config import PATH, IMG
 import pygame as pg
 import sys
 # default values
@@ -26,28 +29,27 @@ class Window:
     """pygame's window module in a box."""
     def __init__(self, config={}):
         """Constructor."""
-        self.config = validateDict(config, default)#dict
+        self.config = validateDict(config, default)# dict
         # pygame module init
         pg.init()
 
         self.display = pg.display.set_mode(self.config["size"], pg.RESIZABLE)# pygame surface
+        windowIcon(IMG["windowicon"])
         self.rect = self.display.get_rect()# pygame rect
         self.scale = self.config["scale"]
         self.backgroundrepeat = self.config["backgroundrepeat"]
         self.background = self.createBackground(self.config["background"])# pygame surface
-        #self.createIcon()
         self.clock = pg.time.Clock()# pygame clock
         self.fps = self.config["fps"]# int
         pg.display.set_caption(self.config["caption"])# str
 
-        #draw(self.config["background"], self.display)
         draw(self.background, self.display)
     def update(self):
         """Update stuff at app's loop-end."""
         pg.display.update()
         self.clock.tick(self.fps)
         # caption of frames per second
-        pg.display.set_caption("fps: {0}".format(int(self.clock.get_fps())))
+        pg.display.set_caption("Quack: {0}".format(int(self.clock.get_fps())))
         draw(self.background, self.display)
     def draw(self, object, position=(0, 0)):
         """Draw everything to the window's surface."""

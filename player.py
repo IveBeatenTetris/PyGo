@@ -1,6 +1,6 @@
 import pygame as pg
-from .utils import getFrames, drawBorder
-from .config import PATH
+from .utils import PATH, getFrames, drawBorder
+#from .config import PATH
 
 class Player(pg.sprite.Sprite):
     """Representing a playable character."""
@@ -16,7 +16,7 @@ class Player(pg.sprite.Sprite):
         self.frames = getFrames(self.rawimage, self.framesize)# list
         self.image = self.frames[0]# pygame surface
         self.rect = self.image.get_rect()# pygame rect
-        self.speed = 2# int
+        self.speed = 2.5# int
         # drawing a border around the player
         self.image.blit(drawBorder(self.rect, [1, "solid", (255, 0, 0)]), (0, 0))
     def __repr__(self):# str

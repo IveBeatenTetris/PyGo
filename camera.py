@@ -18,7 +18,7 @@ class Camera(pg.Surface):
         """Constructor."""
         self.config = validateDict(config, default)# dict
         self.size = self.config["size"]# tuple
-        pg.Surface.__init__(self, self.size, pg.SRCALPHA, 32)# pygame Surface
+        pg.Surface.__init__(self, self.size, pg.SRCALPHA)# pygame Surface
         self.rect = self.get_rect()# pygame rect
         self.tracking = self.config["track"]
         self.screen = pg.Surface(self.size, pg.SRCALPHA)# pygame surface
@@ -41,7 +41,7 @@ class Camera(pg.Surface):
                     sr = self.screenrect
                     if er.width > sr.width or er.height > sr.height:
                         self.screen = pg.Surface(er.size, pg.SRCALPHA)
-                        self.screenrect = self.screen.get_rect()
+                        #self.screenrect = self.screen.get_rect()
                     # drawing layers to the temp surface
                     draw(each, self.screen, each.rect.topleft)
                 if type(each) is Player:
@@ -53,8 +53,9 @@ class Camera(pg.Surface):
         # drawing a border around the camera
         draw(self.border, self.screen, self.screenrect)
 
-        #if self.config["scale"] > 1:
-            #self.scaled = scale(self.screen, self.config["scale"])
-            #draw(self.scaled, self)
+        if self.config["scale"] > 1:
+            self.scaled = scale(self.screen, self.config["scale"])
+            draw(self.scaled, self, self.rect)
+        else:
 
-        draw(self.screen, self)
+            draw(self.screen, self)

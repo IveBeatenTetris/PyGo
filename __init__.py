@@ -2,7 +2,6 @@ from .utils import *
 from .window import Window
 from .image import Image
 from .camera import Camera
-from .camera2 import Camera2
 from .assetloader import AssetLoader
 from .player import Player
 from .map import Map

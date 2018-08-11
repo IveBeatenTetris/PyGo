@@ -9,7 +9,6 @@ from .utils import (
     repeatXY,
     scale
     )
-#from .config import PATH, IMG
 import pygame as pg
 import sys
 # default values
@@ -36,7 +35,7 @@ class Window:
         self.display = pg.display.set_mode(self.config["size"], pg.RESIZABLE)# pygame surface
         windowIcon(IMG["windowicon"])
         self.rect = self.display.get_rect()# pygame rect
-        self.scale = self.config["scale"]
+        #self.scale = self.config["scale"]
         self.backgroundrepeat = self.config["backgroundrepeat"]
         self.background = self.createBackground(self.config["background"])# pygame surface
         self.clock = pg.time.Clock()# pygame clock

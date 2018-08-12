@@ -1,6 +1,4 @@
 from .utils import PATH, loadJSON
-#from .config import PATH
-import os
 
 class AssetLoader:
     """Load assets in json format and append them to the assetloader."""
@@ -17,6 +15,8 @@ class AssetLoader:
     def loadAssets(self, path):# list
         """Walk the assets-directory and open each json file. Plus appending
         file name and file path to the json file."""
+        import os
+
         list = []
 
         for dirs in os.walk(path):

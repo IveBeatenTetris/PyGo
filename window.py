@@ -1,27 +1,31 @@
+# dependencies
 from .utils import (
     PATH,
     IMG,
+    createBackground,
+    getEvents,
+    getDisplay,
     windowIcon,
+    windowTitle,
     draw,
     validateDict,
+    masterClass,
     repeatX,
     repeatY,
     repeatXY,
     scale
     )
 import pygame as pg
-import sys
 # default values
 default = {
-    #"size": (1200, 650),
     "size": (320, 240),
     "caption": "project",
     "fps": 60,
     #"background": (25, 25, 35)
-    #"background": IMG["windowbg"],
-    "background": PATH["sysimg"] + "\\bg01.png",
+    "background": IMG["windowbg"],
+    #"background": PATH["sysimg"] + "\\bg01.png",
     "backgroundrepeat": "xy",
-    "scale": 2
+    "resizable": False
 }
 
 class Window:
@@ -31,56 +35,42 @@ class Window:
         self.config = validateDict(config, default)# dict
         # pygame module init
         pg.init()
-
-        self.display = pg.display.set_mode(self.config["size"], pg.RESIZABLE)# pygame surface
-        windowIcon(IMG["windowicon"])
+        self.resizable = self.config["resizable"]# bool
+        self.display = getDisplay(# pygame surface
+            self.config["size"],
+            resizable = self.resizable
+            )
         self.rect = self.display.get_rect()# pygame rect
-        #self.scale = self.config["scale"]
-        self.backgroundrepeat = self.config["backgroundrepeat"]
-        self.background = self.createBackground(self.config["background"])# pygame surface
+        self.backgroundrepeat = self.config["backgroundrepeat"]# str
+        self.background = self.config["background"]# str /tuple / pygame surface
+        self.bg = createBackground(self.background, self.rect)# pygame surface
         self.clock = pg.time.Clock()# pygame clock
         self.fps = self.config["fps"]# int
-        pg.display.set_caption(self.config["caption"])# str
-
-        draw(self.background, self.display)
+        # window caption and icon
+        pg.display.set_caption(self.config["caption"])
+        windowIcon(IMG["windowicon"])
+        # drawing background to display
+        draw(self.bg, self.display)
     def update(self):
         """Update stuff at app's loop-end."""
         pg.display.update()
         self.clock.tick(self.fps)
         # caption of frames per second
-        pg.display.set_caption("Quack: {0}".format(int(self.clock.get_fps())))
-        draw(self.background, self.display)
+        windowTitle("Quack: {0}".format(int(self.clock.get_fps())))
+        draw(self.bg, self.display)
     def draw(self, object, position=(0, 0)):
         """Draw everything to the window's surface."""
         draw(object, self.display, position)
     def resize(self, size):
         """Resize the window and update it's rect."""
-        self.display = pg.display.set_mode(size, pg.RESIZABLE)
+        self.display = getDisplay(# pygame surface
+            size,
+            resizable = self.resizable
+            )
         self.rect = self.display.get_rect()
-        self.background = self.createBackground(self.config["background"])
+        self.bg = createBackground(self.background, self.rect)
     def getEvents(self):# pygame.event
         """Get pygame events."""
-        for event in pg.event.get():
-            if event.type is pg.QUIT or (event.type is pg.KEYDOWN and event.key == pg.K_ESCAPE):
-                pg.quit()
-                sys.exit()
-            if event.type is pg.VIDEORESIZE:
-                self.resize(event.size)
-
-        return pg.event.get()
-    def createBackground(self, object):# pygame surface
-        """Create a background surface depending on what type was given."""
-        if type(object) is tuple:
-            surface = pg.Surface(self.rect.size)
-            surface.fill(object)
-        elif type(object) is str:
-            object = pg.image.load(object)
-        if object.__class__.__bases__[0] is pg.Surface or type(object) is pg.Surface:
-            if self.backgroundrepeat == "x":
-                surface = repeatX(object, self.rect)
-            elif self.backgroundrepeat == "y":
-                surface = repeatY(object, self.rect)
-            elif self.backgroundrepeat == "xy":
-                surface = repeatXY(object, self.rect)
-
-        return surface
+        events = getEvents()
+        
+        return events

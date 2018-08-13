@@ -8,6 +8,7 @@ class Tile(pg.sprite.Sprite):
         pg.sprite.Sprite.__init__(self)
         self.image = config["image"]
         self.id = config["id"] + 1
+        #print(self.config)
     def __repr__(self):# str
         """String representation."""
         return "<Tile({0})>".format(self.id)

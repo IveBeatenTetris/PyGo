@@ -4,6 +4,7 @@ from .utils import (
     IMG,
     createBackground,
     getEvents,
+    getPressedKeys,
     getDisplay,
     windowIcon,
     windowTitle,
@@ -16,6 +17,7 @@ from .utils import (
     scale
     )
 import pygame as pg
+import sys
 # default values
 default = {
     "size": (320, 240),
@@ -44,7 +46,7 @@ class Window:
         self.backgroundrepeat = self.config["backgroundrepeat"]# str
         self.background = self.config["background"]# str / tuple / pygame.surface
         self.bg = createBackground(self.background, self.rect)# pygame.surface
-        self.clock = pg.time.Clock()# pygame clock
+        self.clock = pg.time.Clock()# pygame.clock
         self.fps = self.config["fps"]# int
         # window caption and icon
         pg.display.set_caption(self.config["caption"])
@@ -72,8 +74,16 @@ class Window:
     def getEvents(self):# pygame.event
         """Get pygame events."""
         events = getEvents()
-        # resizing the window
-        if "windowresize" in events:
-            self.resize(events["windowresize"])
+
+        for event in events:
+            # quit application
+            if event.type is pg.QUIT or (event.type is pg.KEYDOWN and event.key == pg.K_ESCAPE):
+                pg.quit()
+                sys.exit()
+            # resizing the window
+            if event.type is pg.VIDEORESIZE:
+                self.resize(event.size)
 
         return events
+    def getKeys(self):# tuple
+        return getPressedKeys()

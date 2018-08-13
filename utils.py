@@ -128,38 +128,9 @@ def createTiledMap(config, tiles):# pygame.surface
             i += 1
 
     return surface
-def getEvents():# dict
+def getEvents():# pygame.events
     """Get pygame events."""
-    events = {
-
-    }
-
-    for event in pg.event.get():
-        if event.type is pg.QUIT or (event.type is pg.KEYDOWN and event.key == pg.K_ESCAPE):
-            pg.quit()
-            sys.exit()
-        if event.type is pg.VIDEORESIZE:
-            events["windowresize"] = event.size
-        if event.type is pg.KEYDOWN:
-
-            key = ""
-
-            if event.key == pg.K_a:
-                key = "a"
-            if event.key == pg.K_d:
-                key = "d"
-            if event.key == pg.K_w:
-                key = "w"
-            if event.key == pg.K_s:
-                key = "s"
-
-            #event.mod
-
-            events["keydown"] = key
-        elif event.type is pg.KEYUP:
-            events["keydown"] = None
-
-    return events
+    return pg.event.get()
 def getDisplay(size, **kwargs):# pygame.display.surface
     """Create a window display and return it. Customisation possible."""
     for key, value in kwargs.items():
@@ -170,6 +141,9 @@ def getDisplay(size, **kwargs):# pygame.display.surface
                 display = pg.display.set_mode(size)
 
     return display
+def getPressedKeys():# pygame.event.keys
+    """Get pygame.event's pressed-keys."""
+    return pg.key.get_pressed()
 def windowIcon(path):
     """Create an icon for the window from a png file."""
     if type(path) is pg.Surface:

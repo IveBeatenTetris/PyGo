@@ -43,5 +43,20 @@ class Player(pg.sprite.Sprite):
         return "<Player({0})".format(str(self.rect.topleft))
     def move(self, pos):
         """Moving the player to given coordinates."""
+        # if pos is a pygame key-pressed tuple
+        if len(pos) > 2:
+            x , y = (0 , 0)
+
+            if pos[pg.K_a]:
+                x = -self.speed
+            if pos[pg.K_d]:
+                x = self.speed
+            if pos[pg.K_w]:
+                y = -self.speed
+            if pos[pg.K_s]:
+                y = self.speed
+
+            pos = (x, y)
+
         x, y = self.rect.topleft
         self.rect.topleft = (x + pos[0], y + pos[1])

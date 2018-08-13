@@ -21,9 +21,9 @@ default = {
     "size": (320, 240),
     "caption": "project",
     "fps": 60,
-    #"background": (25, 25, 35)
     "background": IMG["windowbg"],
     #"background": PATH["sysimg"] + "\\bg01.png",
+    #"background": (25, 25, 35)
     "backgroundrepeat": "xy",
     "resizable": False
 }
@@ -42,8 +42,8 @@ class Window:
             )
         self.rect = self.display.get_rect()# pygame rect
         self.backgroundrepeat = self.config["backgroundrepeat"]# str
-        self.background = self.config["background"]# str /tuple / pygame surface
-        self.bg = createBackground(self.background, self.rect)# pygame surface
+        self.background = self.config["background"]# str / tuple / pygame.surface
+        self.bg = createBackground(self.background, self.rect)# pygame.surface
         self.clock = pg.time.Clock()# pygame clock
         self.fps = self.config["fps"]# int
         # window caption and icon
@@ -72,5 +72,8 @@ class Window:
     def getEvents(self):# pygame.event
         """Get pygame events."""
         events = getEvents()
-        
+        # resizing the window
+        if "windowresize" in events:
+            self.resize(events["windowresize"])
+
         return events

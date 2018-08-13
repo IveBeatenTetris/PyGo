@@ -34,6 +34,35 @@ def masterClass(object , masterclass):# bool
 
     return bool
 # files & directories
+def isPath(path):# bool
+    """Return True if the given path exists."""
+    if os.path.isfile(path) or os.path.exists(path):
+        bool = True
+    else:
+        bool = False
+
+    return bool
+def loadAssets(path):# list
+    """Walk the assets-directory and open each json file. Plus appending
+    file name and file path to the json file."""
+    list = []
+
+    for dirs in os.walk(path):
+        for each in dirs[2]:
+            if each.split(".")[1] == "json":
+                config = loadJSON(dirs[0] + "\\" + each)
+                list.append(config)
+            # if directory has an image
+            elif each.split(".")[1] == "png":
+                config = {
+                    "name": each.split(".")[0],
+                    "filename": each,
+                    "type": "image",
+                    "filepath": dirs[0]
+                }
+                list.append(config)
+
+    return list
 def loadJSON(path):# dict
     """Load and convert a JSON file."""
     with open(path) as text:
@@ -55,7 +84,7 @@ def validateDict(config={}, defaults={}):# dict
             validated[each] = defaults[each]
 
     return validated
-# pygame
+# pygame lib
 def createBackground(background, rect):# pygame.surface
     """Create a background surface depending on what type was given."""
     surface = pg.Surface(rect.size)
@@ -77,17 +106,58 @@ def createBackground(background, rect):# pygame.surface
             surface = background
 
     return surface
-def getEvents():# pygame.event
+def createTiledMap(config, tiles):# pygame.surface
+    """drawing tiles on a pygame surface and return it."""
+    tilesize = tiles[0].image.get_rect().size
+
+    surface = pg.Surface(
+        (
+            config["width"] * tilesize[0],
+            config["height"] * tilesize[1]
+        ),
+        pg.SRCALPHA)
+
+    i = 0
+    for row in range(config["height"]):
+        y = row * tilesize[1]
+        for line in range(config["width"]):
+            x = line * tilesize[0]
+            # clean tile
+            if config["data"][i] != 0:
+                surface.blit(tiles[config["data"][i] - 1].image, (x, y))
+            i += 1
+
+    return surface
+def getEvents():# dict
     """Get pygame events."""
-    events = []
+    events = {
+
+    }
 
     for event in pg.event.get():
         if event.type is pg.QUIT or (event.type is pg.KEYDOWN and event.key == pg.K_ESCAPE):
             pg.quit()
             sys.exit()
         if event.type is pg.VIDEORESIZE:
-            #self.resize(event.size)
-            events.append({"windowresize": event.size})
+            events["windowresize"] = event.size
+        if event.type is pg.KEYDOWN:
+
+            key = ""
+
+            if event.key == pg.K_a:
+                key = "a"
+            if event.key == pg.K_d:
+                key = "d"
+            if event.key == pg.K_w:
+                key = "w"
+            if event.key == pg.K_s:
+                key = "s"
+
+            #event.mod
+
+            events["keydown"] = key
+        elif event.type is pg.KEYUP:
+            events["keydown"] = None
 
     return events
 def getDisplay(size, **kwargs):# pygame.display.surface
@@ -194,8 +264,8 @@ def getFrames(image, framesize):# list
     del(clip, rect)
 
     return frames
-def scale(surface, factor):
-    """."""
+def scale(surface, factor):# pygame.surface
+    """Scaling the surface by an int-factor."""
     width = int(surface.get_rect().width * factor)
     height = int(surface.get_rect().height * factor)
 

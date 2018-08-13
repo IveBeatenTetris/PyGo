@@ -1,16 +1,31 @@
-import pygame as pg
-#from .config import PATH
-from .utils import PATH, loadJSON, perPixelAlpha
+from .utils import(
+    PATH,
+    validateDict,
+    createTiledMap,
+    loadJSON,
+    perPixelAlpha
+    )
 from .tileset import Tileset
+import pygame as pg
+
+default = {
+    "name": "NoName",
+    "width": 50,
+    "height": 50,
+    "tilewidth": 10,
+    "tileheight": 10,
+    "tilesets": [],
+    "layers": []
+}
 
 class Map(pg.Surface):
-    """."""
+    """A Map object generated from a tiled-map."""
     def __init__(self, config={}):
         """Constructor."""
-        self.config = config# dict
-        self.name = config["name"]# str
-        self.size = (config["width"], config["height"])# tuple
-        self.tilesize = (config["tilewidth"], config["tileheight"])# tuple
+        self.config = validateDict(config, default)# dict
+        self.name = self.config["name"]# str
+        self.size = (self.config["width"], self.config["height"])# tuple
+        self.tilesize = (self.config["tilewidth"], self.config["tileheight"])# tuple
         self.tilesets = self.__createTilesets()# dict
         self.tiles = self.getTiles()# list
         self.layers = self.__createLayers()# dict
@@ -21,7 +36,7 @@ class Map(pg.Surface):
                 self.size[1] * self.tilesize[1]
             )
         )
-        self.rect = self.get_rect()
+        self.rect = self.get_rect()# pygame.rect
 
         # blit each surface to a layer
         for each in self.layers:
@@ -30,7 +45,7 @@ class Map(pg.Surface):
         """String representation."""
         return "<Map('{0}', {1})>".format(self.name, str(self.size))
     def __createTilesets(self):# dict
-        """Create a dict of tileset-objects from the config and return it."""
+        """Create a dict of tileset-configs and return it."""
         tilesets = {}
 
         for cfg in self.config["tilesets"]:
@@ -47,25 +62,11 @@ class Map(pg.Surface):
         layers = {}
 
         for each in self.config["layers"]:
-            width = each["width"] * self.tilesize[0]
-            height = each["height"] * self.tilesize[1]
-            layer = pg.Surface((width, height), pg.SRCALPHA, 32)
-
-            # drawing tiles on each layer
-            i = 0
-            for row in range(each["height"]):
-                y = row * self.tilesize[1]
-                for line in range(each["width"]):
-                    x = line * self.tilesize[0]
-                    # clean tile
-                    if each["data"][i] != 0:
-                        layer.blit(self.tiles[each["data"][i] - 1].image, (x, y))
-                    i = i + 1
-
+            layer = createTiledMap(each, self.tiles)
             # exception for layer 'shadows'
             if each["name"] == "shadows":
                 layer = perPixelAlpha(layer, 50)
-
+            # updating layers
             layers.update({each["name"]: layer})
 
         return layers

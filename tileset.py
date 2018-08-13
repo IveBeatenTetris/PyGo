@@ -9,12 +9,12 @@ class Tileset(pg.Surface):
         """Constructor."""
         self.config = config# dict
         self.name = config["name"]# str
-        self.path = "{0}\\{1}\\{2}".format(
+        self.path = "{0}\\{1}\\{2}".format(# str
             PATH["tilesets"],
             self.name,
             config["image"]
             )
-        self.image = pg.image.load(self.path)# pygame surface
+        self.image = pg.image.load(self.path)# pygame.surface
 
         self.tilesize = (config["tilewidth"], config["tileheight"])# tuple
         self.tiles = self.__createTiles()# list

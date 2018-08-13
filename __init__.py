@@ -1,4 +1,5 @@
 from .utils import *
+from .events import Events
 from .window import Window
 from .image import Image
 from .camera import Camera

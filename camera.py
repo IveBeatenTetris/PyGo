@@ -1,27 +1,29 @@
 import pygame as pg
-from .utils import validateDict, draw, drawBorder, scale
+from .utils import (
+    validateDict,
+    draw,
+    drawBorder,
+    scale
+    )
 from .player import Player
 from .map import Map
 # default values
 default = {
-    #"size": (1200, 650),
     "size": (640, 480),
-    "position": (0, 0),
     "border": [1, "solid", (255, 255, 255)],
     "scale": 1,
     "track": None
 }
 
 class Camera(pg.Surface):
-    """."""
+    """Surface object to render all captured objects on."""
     def __init__(self, config={}):
         """Constructor."""
         self.config = validateDict(config, default)# dict
+        pg.Surface.__init__(self, self.config["size"], pg.SRCALPHA)# pygame.surface
+        self.rect = self.get_rect()# pygame.rect
         self.scale = self.config["scale"]# int
-        pg.Surface.__init__(self, self.config["size"], pg.SRCALPHA)# pygame Surface
-        self.rect = self.get_rect()# pygame rect
-
-        self.tracking = self.config["track"]# none/object
+        self.tracking = self.config["track"]# none / object
     def move(self, pos, anch=None):
         """Moving the camera rect to a specified position."""
         if type(anch) is str:

@@ -14,8 +14,8 @@ default = {
     "height": 50,
     "tilewidth": 10,
     "tileheight": 10,
-    "tilesets": [],
-    "layers": []
+    "tilesets": {},
+    "layers": {}
 }
 
 class Map(pg.Surface):
@@ -29,15 +29,13 @@ class Map(pg.Surface):
         self.tilesets = self.__createTilesets()# dict
         self.tiles = self.getTiles()# list
         self.layers = self.__createLayers()# dict
-
         pg.Surface.__init__(
-            self, (
-                self.size[0] * self.tilesize[0],
-                self.size[1] * self.tilesize[1]
+                self, (
+                    self.size[0] * self.tilesize[0],
+                    self.size[1] * self.tilesize[1]
+                )
             )
-        )
         self.rect = self.get_rect()# pygame.rect
-
         # blit each surface to a layer
         for each in self.layers:
             self.blit(self.layers[each], (0, 0))

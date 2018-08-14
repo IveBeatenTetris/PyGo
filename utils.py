@@ -85,10 +85,10 @@ def validateDict(config={}, defaults={}):# dict
 
     return validated
 # pygame lib
-def createBackground(background, rect):# pygame.surface
+def createBackground(background, rect, bgrepeat=""):# pygame.surface
     """Create a background surface depending on what type was given."""
     surface = pg.Surface(rect.size)
-
+    # background's class type doesn't matter
     if type(background) is tuple:
         surface = pg.Surface(rect.size)
         surface.fill(background)
@@ -96,11 +96,11 @@ def createBackground(background, rect):# pygame.surface
         object = pg.image.load(background).convert()
 
     if masterClass(background, pg.Surface) or type(background) is pg.Surface:
-        if self.backgroundrepeat == "x":
+        if bgrepeat == "x":
             surface = repeatX(background, rect)
-        elif self.backgroundrepeat == "y":
+        elif bgrepeat == "y":
             surface = repeatY(background, rect)
-        elif self.backgroundrepeat == "xy":
+        elif bgrepeat == "xy":
             surface = repeatXY(background, rect)
         else:
             surface = background
@@ -124,7 +124,9 @@ def createTiledMap(config, tiles):# pygame.surface
             x = line * tilesize[0]
             # clean tile
             if config["data"][i] != 0:
-                surface.blit(tiles[config["data"][i] - 1].image, (x, y))
+                tile = tiles[config["data"][i] - 1]
+                surface.blit(tile.image, (x, y))
+
             i += 1
 
     return surface
@@ -207,7 +209,7 @@ def drawBorder(rect, config):# pygame surface
     )
 
     return surface
-def perPixelAlpha(image , opacity=255):# pygame.surface
+def perPixelAlpha(image, opacity=255):# pygame.surface
     """Convert per pixel alpha from image."""
     image.convert_alpha()
     alpha_img = pg.Surface(image.get_rect().size , pg.SRCALPHA)
@@ -250,7 +252,8 @@ def repeatX(image, parent, pos=(0, 0)):# pygame.surface
     """Return a surface with x-line repeated image blitting."""
     child = image.get_rect()
     surface = pg.Surface(parent.size, pg.SRCALPHA)
-    for each in range(int(parent.width / child.width) + child.width):
+
+    for each in range(int(parent.width / child.width) + 1):
         surface.blit(image, (each * child.width, pos[0]))
 
     return surface
@@ -258,7 +261,8 @@ def repeatY(image, parent, pos=(0, 0)):# pygame.surface
     """Return a surface with y-line repeated image blitting."""
     child = image.get_rect()
     surface = pg.Surface(parent.size, pg.SRCALPHA)
-    for each in range(int(parent.height / child.height) + child.height):
+
+    for each in range(int(parent.height / child.height) + 1):
         surface.blit(image, (pos[1], each * child.height))
 
     return surface
@@ -266,8 +270,9 @@ def repeatXY(image, parent, bg_position=(0, 0)):# pygame.surface
     """Return a surface with x and y-line repeated image blitting."""
     child = image.get_rect()
     surface = pg.Surface(parent.size, pg.SRCALPHA)
-    for j in range(int(parent.width / child.width) + child.width):
-        for i in range(int(parent.height / child.height) + child.height):
+
+    for j in range(int(parent.width / child.width) + 1):
+        for i in range(int(parent.height / child.height) + 1):
             surface.blit(image, (j * child.width, i * child.width))
 
     return surface

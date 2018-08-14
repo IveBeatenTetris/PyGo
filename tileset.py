@@ -7,10 +7,12 @@ from .utils import (
 from .tile import Tile
 
 default = {
-    "name": "NoName",
+    "name": "NoTileset",
     "image": "notileset.png",
     "tilewidth": 16,
-    "tileheight": 16
+    "tileheight": 16,
+    "tilecount": 0,
+    "tileproperties": {}
     }
 
 class Tileset(pg.Surface):
@@ -18,19 +20,20 @@ class Tileset(pg.Surface):
     surface for previewing purpose."""
     def __init__(self, config={}):
         """Constructor."""
-        self.config = config# dict
-        self.name = config["name"]# str
-        if self.config["image"] == "noimage.png":
+        self.config = validateDict(config, default)# dict
+        self.name = self.config["name"]# str
+        if self.config["image"] == "notileset.png":
             self.path = PATH["sysimg"]# str
         else:
             self.path = "{0}\\{1}".format(PATH["tilesets"], self.name)# str
         self.imagepath = self.path + "\\" + self.config["image"]# str
         self.image = pg.image.load(self.imagepath)# pygame.surface
         pg.Surface.__init__(self, self.image.get_rect().size)
-
-        self.tilesize = (config["tilewidth"], config["tileheight"])# tuple
+        self.tilesize = (# tuple
+            self.config["tilewidth"],
+            self.config["tileheight"]
+            )
         self.tiles = self.__createTiles()# list
-
         self.blit(self.image, (0, 0))
     def __repr__(self):# str
         """String representation."""
@@ -43,10 +46,17 @@ class Tileset(pg.Surface):
         tilelist = []
 
         for i, each in enumerate(getFrames(self.image, self.tilesize), 0):
+            # this is food for a new tile object
             config = {
                 "image": each,
                 "id": i
                 }
+            # adding a "blocking" property
+            if "tileproperties" in self.config:
+                props = self.config["tileproperties"]
+                if str(i) in props:
+                    config["block"] = props[str(i)]["block"]
+            # appending to the result-list
             tilelist.append(Tile(config))
 
         return tilelist

@@ -43,9 +43,9 @@ class Window:
             resizable = self.resizable
             )
         self.rect = self.display.get_rect()# pygame rect
-        self.backgroundrepeat = self.config["backgroundrepeat"]# str
         self.background = self.config["background"]# str / tuple / pygame.surface
-        self.bg = createBackground(self.background, self.rect)# pygame.surface
+        self.backgroundrepeat = self.config["backgroundrepeat"]# str
+        self.bg = createBackground(self.background, self.rect, self.backgroundrepeat)# pygame.surface
         self.clock = pg.time.Clock()# pygame.clock
         self.fps = self.config["fps"]# int
         # window caption and icon
@@ -70,7 +70,7 @@ class Window:
             resizable = self.resizable
             )
         self.rect = self.display.get_rect()
-        self.bg = createBackground(self.background, self.rect)
+        self.bg = createBackground(self.background, self.rect, self.backgroundrepeat)
     def getEvents(self):# pygame.event
         """Get pygame events."""
         events = getEvents()

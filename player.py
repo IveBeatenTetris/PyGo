@@ -18,7 +18,6 @@ class Player(pg.sprite.Sprite):
     def __init__(self, config={}):
         """Constructor."""
         pg.sprite.Sprite.__init__(self)
-
         self.config = validateDict(config, default)# dict
         self.name = self.config["name"]# str
         if self.config["image"] == "noimage.png":

@@ -106,10 +106,12 @@ def createBackground(background, rect, bgrepeat=""):# pygame.surface
             surface = background
 
     return surface
-def createTiledMap(config, tiles):# pygame.surface
-    """drawing tiles on a pygame surface and return it."""
+def createTiledMap(config, tiles):# dict
+    """drawing tiles on a pygame surface and return it in a dict together with
+    a list of wall rects."""
     tilesize = tiles[0].image.get_rect().size
 
+    blocks = []
     surface = pg.Surface(
         (
             config["width"] * tilesize[0],
@@ -129,7 +131,10 @@ def createTiledMap(config, tiles):# pygame.surface
 
             i += 1
 
-    return surface
+    return {
+        "image": surface,
+        "blocks": blocks
+        }
 def getEvents():# pygame.events
     """Get pygame events."""
     return pg.event.get()

@@ -60,7 +60,10 @@ class Map(pg.Surface):
         layers = {}
 
         for each in self.config["layers"]:
-            layer = createTiledMap(each, self.tiles)
+            tmap = createTiledMap(each, self.tiles)
+            # //TODO make layer a dict with several attributes
+            layer = tmap["image"]
+            blocks = tmap["blocks"]
             # exception for layer 'shadows'
             if each["name"] == "shadows":
                 layer = perPixelAlpha(layer, 50)

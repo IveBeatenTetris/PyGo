@@ -124,10 +124,13 @@ def createTiledMap(config, tiles):# dict
         y = row * tilesize[1]
         for line in range(config["width"]):
             x = line * tilesize[0]
-            # clean tile
+            # only draw tile if area isn't empty
             if config["data"][i] != 0:
                 tile = tiles[config["data"][i] - 1]
                 surface.blit(tile.image, (x, y))
+                # add a block rect to blocklist if tile is not passable
+                if tile.block:
+                    blocks.append(pg.Rect((x, y), tile.image.get_rect().size))
 
             i += 1
 

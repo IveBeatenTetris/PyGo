@@ -28,6 +28,7 @@ class Tile(pg.sprite.Sprite):
         else:
             self.image = self.config["image"]# pygame.surface
         self.id = self.config["id"] + 1# int
+        self.block = self.config["block"]# bool
     def __repr__(self):# str
         """String representation."""
         return "<Tile({0})>".format(self.id)

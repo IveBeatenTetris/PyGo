@@ -38,7 +38,7 @@ class Map(pg.Surface):
         self.rect = self.get_rect()# pygame.rect
         # blit each surface to a layer
         for each in self.layers:
-            self.blit(self.layers[each], (0, 0))
+            self.blit(self.layers[each]["image"], (0, 0))
     def __repr__(self):# str
         """String representation."""
         return "<Map('{0}', {1})>".format(self.name, str(self.size))
@@ -56,19 +56,18 @@ class Map(pg.Surface):
 
         return tilesets
     def __createLayers(self):# dict
-        """."""
+        """Return a dict of layers. Each layer is an own dict with several
+        attributes."""
         layers = {}
 
         for each in self.config["layers"]:
             tmap = createTiledMap(each, self.tiles)
-            # //TODO make layer a dict with several attributes
-            layer = tmap["image"]
-            blocks = tmap["blocks"]
             # exception for layer 'shadows'
             if each["name"] == "shadows":
-                layer = perPixelAlpha(layer, 50)
+                #layer = perPixelAlpha(layer, 50)
+                tmap["image"] = perPixelAlpha(tmap["image"], 50)
             # updating layers
-            layers.update({each["name"]: layer})
+            layers.update({each["name"]: tmap})
 
         return layers
     def getTiles(self):# list

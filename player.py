@@ -3,7 +3,8 @@ from .utils import (
     validateDict,
     draw,
     getFrames,
-    drawBorder
+    drawBorder,
+    getPressedKeys
     )
 import pygame as pg
 
@@ -40,22 +41,31 @@ class Player(pg.sprite.Sprite):
     def __repr__(self):# str
         """String representation."""
         return "<Player({0})".format(str(self.rect.topleft))
-    def move(self, pos):
+    def __moveSingleAxis(self, pos, blocks):
+        """Dirty method to check for collisions and moving the player to the
+        right position."""
+        self.rect.x += pos[0]
+        self.rect.y += pos[1]
+
+        for block in blocks:
+            if self.rect.colliderect(block):
+                if pos[0] > 0:
+                    self.rect.right = block.left
+                if pos[0] < 0:
+                    self.rect.left = block.right
+                if pos[1] > 0:
+                    self.rect.bottom = block.top
+                if pos[1] < 0:
+                    self.rect.top = block.bottom
+    def move(self, blocks=[]):
         """Moving the player to given coordinates."""
-        # if pos is a pygame key-pressed tuple
-        if len(pos) > 2:
-            x , y = (0 , 0)
+        keys = getPressedKeys()
 
-            if pos[pg.K_a]:
-                x = -self.speed
-            if pos[pg.K_d]:
-                x = self.speed
-            if pos[pg.K_w]:
-                y = -self.speed
-            if pos[pg.K_s]:
-                y = self.speed
-
-            pos = (x, y)
-
-        x, y = self.rect.topleft
-        self.rect.topleft = (x + pos[0], y + pos[1])
+        if keys[pg.K_a]:
+            self.__moveSingleAxis((-self.speed, 0), blocks)
+        if keys[pg.K_d]:
+            self.__moveSingleAxis((self.speed, 0), blocks)
+        if keys[pg.K_w]:
+            self.__moveSingleAxis((0, -self.speed), blocks)
+        if keys[pg.K_s]:
+            self.__moveSingleAxis((0, self.speed), blocks)

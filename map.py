@@ -64,7 +64,6 @@ class Map(pg.Surface):
             tmap = createTiledMap(each, self.tiles)
             # exception for layer 'shadows'
             if each["name"] == "shadows":
-                #layer = perPixelAlpha(layer, 50)
                 tmap["image"] = perPixelAlpha(tmap["image"], 50)
             # updating layers
             layers.update({each["name"]: tmap})

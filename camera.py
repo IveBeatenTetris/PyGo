@@ -10,7 +10,7 @@ from .map import Map
 # default values
 default = {
     "size": (640, 480),
-    "border": [1, "solid", (255, 255, 255)],
+    "border": None,
     "scale": 1,
     "track": None
 }
@@ -24,6 +24,7 @@ class Camera(pg.Surface):
         self.rect = self.get_rect()# pygame.rect
         self.scale = self.config["scale"]# int
         self.tracking = self.config["track"]# none / object
+        self.border = self.config["border"]# none / list / tuple
     def move(self, pos, anch=None):
         """Moving the camera rect to a specified position."""
         if type(anch) is str:
@@ -50,7 +51,8 @@ class Camera(pg.Surface):
                         self.move(obj.rect.center, "center")
                         draw(obj, surface, "center")
         # drawing a border to viszualize the size
-        draw(drawBorder(self.rect, self.config["border"]), surface)
+        if self.border:
+            draw(drawBorder(self.rect, self.config["border"]), surface)
         # final drawing step
         if self.scale > 1:
             surface = scale(surface, self.scale)

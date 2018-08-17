@@ -29,7 +29,7 @@ class Animation(pg.sprite.Sprite):
         """Updating the pointer's position. The active frame is always drawn to
         the animation image surface."""
         for i in range(self.framecount):
-            if self.timer == int((i + 1) * self.timemod):
+            if self.timer == int((i) * self.timemod):
                 self.nextFrame()
 
         if self.timer == 0:

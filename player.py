@@ -10,12 +10,16 @@ from . utils import (
 from . animation import Animation
 import pygame as pg
 
+# default values
 default = {
     "name": "Player1",
     "image": "noimage.png",
     "framesize": [50, 50],
-    "border": None
-}
+    #"border": None,
+    "border": [1, "solid", [255, 0, 0]],
+    "animationspeed": 25,
+    "collisionbox": None
+    }
 
 class Player(pg.sprite.Sprite):
     """Representing a playable character."""
@@ -24,10 +28,13 @@ class Player(pg.sprite.Sprite):
         pg.sprite.Sprite.__init__(self)
         self.config = validateDict(config, default)# dict
         self.name = self.config["name"]# str
+
+        # no image exception
         if self.config["image"] == "noimage.png":
             self.path = PATH["sysimg"]# str
         else:
             self.path = "{0}\\{1}".format(PATH["identities"], self.name)# str
+
         self.imagepath = self.path + "\\" + self.config["image"]# str
         self.rawimage = pg.image.load(self.imagepath)# pygame.surface
         self.framesize = self.config["framesize"]# tuple
@@ -37,41 +44,35 @@ class Player(pg.sprite.Sprite):
         self.speed = 2# int
         self.facing = "down"# str
         self.moving = False# bool
-        self.border = self.config["border"]
-
-        # //TODO make a class for animations
-        self.animationtimer = 41# int
-        self.animationmaximum = self.animationtimer# int
+        self.border = self.config["border"]# none / list / tuple
+        self.animationspeed = self.config["animationspeed"]# int
         self.animations = {# dict
             "walkdown": Animation({
                 "frames": self.frames,
                 "sequence": [4, 5, 6, 7],
-                "duration": 35
+                "duration": self.animationspeed
                 }),
             "walkleft": Animation({
                 "frames": self.frames,
                 "sequence": [8, 9, 10, 11],
-                "duration": 35
+                "duration": self.animationspeed
                 }),
             "walkup": Animation({
                 "frames": self.frames,
                 "sequence": [12, 13, 14, 15],
-                "duration": 35
+                "duration": self.animationspeed
                 }),
             "walkright": Animation({
                 "frames": self.frames,
                 "sequence": [16, 17, 18, 19],
-                "duration": 35
+                "duration": self.animationspeed
                 })
             }
-
-        # drawing a border around the player
-        if self.border:
-            draw(
-                drawBorder(self.rect, self.border),
-                self.image,
-                (0, 0)
-                )
+        if self.config["collisionbox"]:
+            self.collisionbox = pg.Rect(self.config["collisionbox"])# pygame.rect
+        else:
+            self.collisionbox = self.rect# pygame.rect
+            self.config["collisionbox"] = pg.Rect(self.collisionbox)# pygame.rect
     def __repr__(self):# str
         """String representation."""
         return "<Player({0})".format(str(self.rect.topleft))
@@ -81,17 +82,32 @@ class Player(pg.sprite.Sprite):
         right position."""
         self.rect.x += pos[0]
         self.rect.y += pos[1]
+        self.collisionbox.topleft = (
+            self.rect.left + self.config["collisionbox"][0],
+            self.rect.top + self.config["collisionbox"][1]
+            )
 
         for block in blocks:
-            if self.rect.colliderect(block):
+            # if self.rect.colliderect(block):
+            #     if pos[0] > 0:
+            #         self.rect.right = block.left
+            #     if pos[0] < 0:
+            #         self.rect.left = block.right
+            #     if pos[1] > 0:
+            #         self.rect.bottom = block.top
+            #     if pos[1] < 0:
+            #         self.rect.top = block.bottom
+            if self.collisionbox.colliderect(block):
+                rect = pg.Rect(self.config["collisionbox"])
+
                 if pos[0] > 0:
-                    self.rect.right = block.left
+                    self.rect.right = block.left + (self.rect.width - rect.right)
                 if pos[0] < 0:
-                    self.rect.left = block.right
+                    self.rect.left = block.right - rect.left
                 if pos[1] > 0:
-                    self.rect.bottom = block.top
+                    self.rect.bottom = block.top + (self.rect.height - rect.bottom)
                 if pos[1] < 0:
-                    self.rect.top = block.bottom
+                    self.rect.top = block.bottom - rect.top
     def move(self, blocks=[]):
         """Moving the player to given coordinates."""
         keys = getPressedKeys()
@@ -146,4 +162,12 @@ class Player(pg.sprite.Sprite):
                 drawBorder(self.rect, self.border),
                 self.image,
                 (0, 0)
+                )
+            draw(
+                drawBorder(
+                        self.collisionbox,
+                        [1, "solid", [0, 0, 255]]
+                    ),
+                    self.image,
+                    pg.Rect(self.config["collisionbox"]).topleft
                 )

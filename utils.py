@@ -154,6 +154,14 @@ def getDisplay(size, **kwargs):# pygame.display.surface
 def getPressedKeys():# pygame.event.keys
     """Get pygame.event's pressed-keys."""
     return pg.key.get_pressed()
+def wait(amount):
+    # t = pg.time.get_ticks()
+    # getTicksLastFrame = t
+    # # deltaTime in seconds.
+    # deltaTime = (t - getTicksLastFrame) / 1000.0
+    # print(deltaTime)
+    ms = pg.time.Clock().tick(amount)
+    #print(ms)
 def windowIcon(path):
     """Create an icon for the window from a png file."""
     if type(path) is pg.Surface:

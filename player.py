@@ -1,17 +1,20 @@
-from .utils import (
+from . utils import (
     PATH,
     validateDict,
     draw,
     getFrames,
     drawBorder,
-    getPressedKeys
+    getPressedKeys,
+    wait
     )
+from . animation import Animation
 import pygame as pg
 
 default = {
     "name": "Player1",
     "image": "noimage.png",
-    "framesize": [50, 50]
+    "framesize": [50, 50],
+    "border": None
 }
 
 class Player(pg.sprite.Sprite):
@@ -33,12 +36,42 @@ class Player(pg.sprite.Sprite):
         self.rect = self.image.get_rect()# pygame.rect
         self.speed = 2# int
         self.facing = "down"# str
+        self.moving = False# bool
+        self.border = self.config["border"]
+
+        # //TODO make a class for animations
+        self.animationtimer = 41# int
+        self.animationmaximum = self.animationtimer# int
+        self.animations = {# dict
+            "walkdown": Animation(
+                self.frames,
+                [4, 5, 6, 7],
+                40
+                ),
+            "walkleft": Animation(
+                self.frames,
+                [8, 9, 10, 11],
+                40
+                ),
+            "walkup": Animation(
+                self.frames,
+                [12, 13, 14, 15],
+                40
+                ),
+            "walkright": Animation(
+                self.frames,
+                [16, 17, 18, 19],
+                40
+                )
+            }
+
         # drawing a border around the player
-        # draw(
-        #     drawBorder(self.rect, [1, "solid", (255, 0, 0)]),
-        #     self.image,
-        #     (0, 0)
-        #     )
+        if self.border:
+            draw(
+                drawBorder(self.rect, self.border),
+                self.image,
+                (0, 0)
+                )
     def __repr__(self):# str
         """String representation."""
         return "<Player({0})".format(str(self.rect.topleft))
@@ -62,28 +95,55 @@ class Player(pg.sprite.Sprite):
     def move(self, blocks=[]):
         """Moving the player to given coordinates."""
         keys = getPressedKeys()
+        self.moving = False
 
+        # moving the payer sprite
         if keys[pg.K_a]:
             self.__moveSingleAxis((-self.speed, 0), blocks)
             self.facing = "left"
+            self.moving = True
         if keys[pg.K_d]:
             self.__moveSingleAxis((self.speed, 0), blocks)
             self.facing = "right"
+            self.moving = True
         if keys[pg.K_w]:
             self.__moveSingleAxis((0, -self.speed), blocks)
             self.facing = "up"
+            self.moving = True
         if keys[pg.K_s]:
             self.__moveSingleAxis((0, self.speed), blocks)
             self.facing = "down"
+            self.moving = True
 
-        self.turn()
-    def turn(self):
-        """."""
-        if self.facing == "down":
-            self.image = self.frames[0]
-        elif self.facing == "left":
-            self.image = self.frames[1]
-        elif self.facing == "up":
-            self.image = self.frames[2]
-        elif self.facing == "right":
-            self.image = self.frames[3]
+        # walking cycle
+        if self.moving:
+            if self.facing == "down":
+                name = "walkdown"
+            elif self.facing == "left":
+                name = "walkleft"
+            elif self.facing == "up":
+                name = "walkup"
+            elif self.facing == "right":
+                name = "walkright"
+
+            self.image = self.animations[name].image
+            self.animations[name].update()
+
+        # idle facing direction
+        else:
+            if self.facing == "down":
+                self.image = self.frames[0]
+            elif self.facing == "left":
+                self.image = self.frames[1]
+            elif self.facing == "up":
+                self.image = self.frames[2]
+            elif self.facing == "right":
+                self.image = self.frames[3]
+
+        # drawing a border around the player
+        if self.border:
+            draw(
+                drawBorder(self.rect, self.border),
+                self.image,
+                (0, 0)
+                )

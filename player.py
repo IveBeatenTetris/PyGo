@@ -15,8 +15,8 @@ default = {
     "name": "Player1",
     "image": "noimage.png",
     "framesize": [50, 50],
-    #"border": None,
-    "border": [1, "solid", [255, 0, 0]],
+    "border": None,
+    #"border": [1, "solid", [255, 0, 0]],
     "animationspeed": 25,
     "collisionbox": None
     }
@@ -88,15 +88,6 @@ class Player(pg.sprite.Sprite):
             )
 
         for block in blocks:
-            # if self.rect.colliderect(block):
-            #     if pos[0] > 0:
-            #         self.rect.right = block.left
-            #     if pos[0] < 0:
-            #         self.rect.left = block.right
-            #     if pos[1] > 0:
-            #         self.rect.bottom = block.top
-            #     if pos[1] < 0:
-            #         self.rect.top = block.bottom
             if self.collisionbox.colliderect(block):
                 rect = pg.Rect(self.config["collisionbox"])
 

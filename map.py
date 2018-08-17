@@ -1,13 +1,14 @@
-from .utils import(
+from . utils import(
     PATH,
     validateDict,
     createTiledMap,
     loadJSON,
     perPixelAlpha
     )
-from .tileset import Tileset
+from . tileset import Tileset
 import pygame as pg
 
+# default values
 default = {
     "name": "NoName",
     "width": 50,
@@ -36,6 +37,7 @@ class Map(pg.Surface):
                 )
             )
         self.rect = self.get_rect()# pygame.rect
+
         # blit each surface to a layer
         for each in self.layers:
             self.blit(self.layers[each]["image"], (0, 0))
@@ -62,9 +64,11 @@ class Map(pg.Surface):
 
         for each in self.config["layers"]:
             tmap = createTiledMap(each, self.tiles)
+
             # exception for layer 'shadows'
             if each["name"] == "shadows":
                 tmap["image"] = perPixelAlpha(tmap["image"], 50)
+
             # updating layers
             layers.update({each["name"]: tmap})
 

@@ -49,13 +49,18 @@ class Tileset(pg.Surface):
             # this is food for a new tile object
             config = {
                 "image": each,
-                "id": i
+                "id": i,
                 }
-            # adding a "blocking" property
+
+            # adding optional properties
             if "tileproperties" in self.config:
                 props = self.config["tileproperties"]
                 if str(i) in props:
                     config["block"] = props[str(i)]["block"]
+                    try:
+                        config["visible"] = props[str(i)]["visible"]
+                    except KeyError:
+                        pass
             # appending to the result-list
             tilelist.append(Tile(config))
 

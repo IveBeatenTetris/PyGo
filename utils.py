@@ -1,6 +1,7 @@
 # dependencies
 import json, os, sys
 import pygame as pg
+
 # project and library pathes
 PATH = {
     "go": os.path.dirname(__file__),
@@ -17,6 +18,7 @@ IMG = {
     "windowbg": pg.image.load(PATH["sysimg"] + "\\bg01.png"),
     "windowicon": pg.image.load(PATH["sysimg"] + "\\ente.png")
 }
+
 # console
 def prettyPrint(data, sort=False, tabs=4):
     """Pretty print dict."""
@@ -24,6 +26,7 @@ def prettyPrint(data, sort=False, tabs=4):
         print(json.dumps(data, sort_keys=sort, indent=tabs))
     else:
         print("Nothing to pretty-print.")
+
 # class and object functions
 def masterClass(object , masterclass):# bool
     """Check if object's master class matches the given one."""
@@ -33,6 +36,7 @@ def masterClass(object , masterclass):# bool
         bool = False
 
     return bool
+
 # files & directories
 def isPath(path):# bool
     """Return True if the given path exists."""
@@ -72,6 +76,7 @@ def loadJSON(path):# dict
         js.update({"filepath": path})
 
     return js
+
 # dictionary operations
 def validateDict(config={}, defaults={}):# dict
     """Validate a dictionary by given defaults. Params must be dict."""
@@ -84,6 +89,7 @@ def validateDict(config={}, defaults={}):# dict
             validated[each] = defaults[each]
 
     return validated
+
 # pygame lib
 def createBackground(background, rect, bgrepeat=""):# pygame.surface
     """Create a background surface depending on what type was given."""
@@ -124,10 +130,12 @@ def createTiledMap(config, tiles):# dict
         y = row * tilesize[1]
         for line in range(config["width"]):
             x = line * tilesize[0]
+
             # only draw tile if area isn't empty
             if config["data"][i] != 0:
                 tile = tiles[config["data"][i] - 1]
                 surface.blit(tile.image, (x, y))
+
                 # add a block rect to blocklist if tile is not passable
                 if tile.block:
                     blocks.append(pg.Rect((x, y), tile.image.get_rect().size))

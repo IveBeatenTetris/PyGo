@@ -43,26 +43,26 @@ class Player(pg.sprite.Sprite):
         self.animationtimer = 41# int
         self.animationmaximum = self.animationtimer# int
         self.animations = {# dict
-            "walkdown": Animation(
-                self.frames,
-                [4, 5, 6, 7],
-                40
-                ),
-            "walkleft": Animation(
-                self.frames,
-                [8, 9, 10, 11],
-                40
-                ),
-            "walkup": Animation(
-                self.frames,
-                [12, 13, 14, 15],
-                40
-                ),
-            "walkright": Animation(
-                self.frames,
-                [16, 17, 18, 19],
-                40
-                )
+            "walkdown": Animation({
+                "frames": self.frames,
+                "sequence": [4, 5, 6, 7],
+                "duration": 35
+                }),
+            "walkleft": Animation({
+                "frames": self.frames,
+                "sequence": [8, 9, 10, 11],
+                "duration": 35
+                }),
+            "walkup": Animation({
+                "frames": self.frames,
+                "sequence": [12, 13, 14, 15],
+                "duration": 35
+                }),
+            "walkright": Animation({
+                "frames": self.frames,
+                "sequence": [16, 17, 18, 19],
+                "duration": 35
+                })
             }
 
         # drawing a border around the player

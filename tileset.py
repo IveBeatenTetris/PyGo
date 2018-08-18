@@ -56,7 +56,11 @@ class Tileset(pg.Surface):
             if "tileproperties" in self.config:
                 props = self.config["tileproperties"]
                 if str(i) in props:
-                    config["block"] = props[str(i)]["block"]
+                    try:
+                        config["block"] = props[str(i)]["block"]
+                    except KeyError:
+                        pass
+                    # block visibility
                     try:
                         config["visible"] = props[str(i)]["visible"]
                     except KeyError:

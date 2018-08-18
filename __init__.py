@@ -1,4 +1,5 @@
 from . utils import *
+from . zrect import ZRect
 from . window import Window
 from . image import Image
 from . camera import Camera

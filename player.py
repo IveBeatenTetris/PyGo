@@ -7,6 +7,7 @@ from . utils import (
     getPressedKeys,
     wait
     )
+from . zrect import ZRect
 from . animation import Animation
 import pygame as pg
 
@@ -15,7 +16,7 @@ default = {
     "name": "Player1",
     "image": "noimage.png",
     "framesize": [50, 50],
-    "speed": 2,
+    "speed": 1,
     "border": None,
     #"border": [1, "solid", [255, 0, 0]],
     "animationspeed": 25,
@@ -41,7 +42,7 @@ class Player(pg.sprite.Sprite):
         self.framesize = self.config["framesize"]# tuple
         self.frames = getFrames(self.rawimage, self.framesize)# list
         self.image = self.frames[0]# pygame.surface
-        self.rect = self.image.get_rect()# pygame.rect
+        self.rect = ZRect(self.image.get_rect())# pygame.rect
         self.speed = self.config["speed"]# float / int
         self.facing = "down"# str
         self.moving = False# bool

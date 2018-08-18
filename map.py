@@ -37,9 +37,11 @@ class Map(pg.Surface):
                 )
             )
         self.rect = self.get_rect()# pygame.rect
-
-        # blit each surface to a layer
+        self.blocks = []# list
         for each in self.layers:
+            # adding blockable positions from each layer
+            self.blocks += self.layers[each]["blocks"]
+            # draw each layer to surface
             self.blit(self.layers[each]["image"], (0, 0))
     def __repr__(self):# str
         """String representation."""

@@ -15,6 +15,7 @@ default = {
     "name": "Player1",
     "image": "noimage.png",
     "framesize": [50, 50],
+    "speed": 2,
     "border": None,
     #"border": [1, "solid", [255, 0, 0]],
     "animationspeed": 25,
@@ -41,7 +42,7 @@ class Player(pg.sprite.Sprite):
         self.frames = getFrames(self.rawimage, self.framesize)# list
         self.image = self.frames[0]# pygame.surface
         self.rect = self.image.get_rect()# pygame.rect
-        self.speed = 2# int
+        self.speed = self.config["speed"]# float / int
         self.facing = "down"# str
         self.moving = False# bool
         self.border = self.config["border"]# none / list / tuple
@@ -80,8 +81,8 @@ class Player(pg.sprite.Sprite):
     def __moveSingleAxis(self, pos, blocks):
         """Dirty method to check for collisions and moving the player to the
         right position."""
-        self.rect.x += pos[0]
-        self.rect.y += pos[1]
+        self.rect.left = self.rect.left + pos[0]
+        self.rect.top = self.rect.top + pos[1]
         self.collisionbox.topleft = (
             self.rect.left + self.config["collisionbox"][0],
             self.rect.top + self.config["collisionbox"][1]
@@ -103,6 +104,11 @@ class Player(pg.sprite.Sprite):
         """Moving the player to given coordinates."""
         keys = getPressedKeys()
         self.moving = False
+        self.speed = self.config["speed"]
+
+        # shift key is pressed
+        if pg.key.get_mods() & pg.KMOD_SHIFT:
+            self.speed = int(self.speed * 1.5)
 
         # moving the payer sprite
         if keys[pg.K_a]:

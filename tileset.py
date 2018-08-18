@@ -56,6 +56,8 @@ class Tileset(pg.Surface):
             if "tileproperties" in self.config:
                 props = self.config["tileproperties"]
                 if str(i) in props:
+
+                    # block-passing property
                     try:
                         config["block"] = props[str(i)]["block"]
                     except KeyError:
@@ -65,6 +67,7 @@ class Tileset(pg.Surface):
                         config["visible"] = props[str(i)]["visible"]
                     except KeyError:
                         pass
+
             # appending to the result-list
             tilelist.append(Tile(config))
 

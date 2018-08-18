@@ -6,21 +6,21 @@ from .utils import (
     )
 from .tile import Tile
 
-default = {
-    "name": "NoTileset",
-    "image": "notileset.png",
-    "tilewidth": 16,
-    "tileheight": 16,
-    "tilecount": 0,
-    "tileproperties": {}
-    }
-
 class Tileset(pg.Surface):
     """Holds all tiles as single objects in a list. Also itself is a pygame
     surface for previewing purpose."""
+    # default values
+    default = {
+        "name": "NoTileset",
+        "image": "notileset.png",
+        "tilewidth": 16,
+        "tileheight": 16,
+        "tilecount": 0,
+        "tileproperties": {}
+    }
     def __init__(self, config={}):
         """Constructor."""
-        self.config = validateDict(config, default)# dict
+        self.config = validateDict(config, self.default)# dict
         self.name = self.config["name"]# str
         if self.config["image"] == "notileset.png":
             self.path = PATH["sysimg"]# str

@@ -8,22 +8,21 @@ from . utils import(
 from . tileset import Tileset
 import pygame as pg
 
-# default values
-default = {
-    "name": "NoName",
-    "width": 50,
-    "height": 50,
-    "tilewidth": 10,
-    "tileheight": 10,
-    "tilesets": {},
-    "layers": {}
-}
-
 class Map(pg.Surface):
     """A Map object generated from a tiled-map."""
+    # default values
+    default = {
+        "name": "NoName",
+        "width": 50,
+        "height": 50,
+        "tilewidth": 10,
+        "tileheight": 10,
+        "tilesets": {},
+        "layers": {}
+    }
     def __init__(self, config={}):
         """Constructor."""
-        self.config = validateDict(config, default)# dict
+        self.config = validateDict(config, self.default)# dict
         self.name = self.config["name"]# str
         self.size = (self.config["width"], self.config["height"])# tuple
         self.tilesize = (self.config["tilewidth"], self.config["tileheight"])# tuple

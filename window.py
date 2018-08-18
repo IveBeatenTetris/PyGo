@@ -18,27 +18,27 @@ from .utils import (
     )
 import pygame as pg
 import sys, time
-# default values
-default = {
-    "size": (320, 240),
-    "caption": "project",
-    "fps": 60,
-    "gamespeed": 1,
-    "background": IMG["windowbg"],
-    #"background": PATH["sysimg"] + "\\bg01.png",
-    #"background": (25, 25, 35)
-    "backgroundrepeat": "xy",
-    "resizable": False
-}
 
 class Window:
     """pygame's window module in a box."""
+    # default values
+    default = {
+        "size": (320, 240),
+        "caption": "project",
+        "fps": 60,
+        "gamespeed": 1,
+        "background": IMG["windowbg"],
+        #"background": PATH["sysimg"] + "\\bg01.png",
+        #"background": (25, 25, 35)
+        "backgroundrepeat": "xy",
+        "resizable": False
+    }
     def __init__(self, config={}):
         """Constructor."""
         # pygame module init
         pg.init()
 
-        self.config = validateDict(config, default)# dict
+        self.config = validateDict(config, self.default)# dict
         self.resizable = self.config["resizable"]# bool
         self.display = getDisplay(# pygame surface
             self.config["size"],
@@ -92,10 +92,12 @@ class Window:
         events = getEvents()
 
         for event in events:
+
             # quit application
             if event.type is pg.QUIT or (event.type is pg.KEYDOWN and event.key == pg.K_ESCAPE):
                 pg.quit()
                 sys.exit()
+
             # resizing the window
             if event.type is pg.VIDEORESIZE:
                 self.resize(event.size)

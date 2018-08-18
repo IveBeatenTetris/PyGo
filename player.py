@@ -11,24 +11,23 @@ from . zrect import ZRect
 from . animation import Animation
 import pygame as pg
 
-# default values
-default = {
-    "name": "Player1",
-    "image": "noimage.png",
-    "framesize": [50, 50],
-    "speed": 1,
-    "border": None,
-    #"border": [1, "solid", [255, 0, 0]],
-    "animationspeed": 25,
-    "collisionbox": None
-    }
-
 class Player(pg.sprite.Sprite):
     """Representing a playable character."""
+    # default values
+    default = {
+        "name": "Player1",
+        "image": "noimage.png",
+        "framesize": [50, 50],
+        "speed": 1,
+        "border": None,
+        #"border": [1, "solid", [255, 0, 0]],
+        "animationspeed": 25,
+        "collisionbox": None
+        }
     def __init__(self, config={}):
         """Constructor."""
         pg.sprite.Sprite.__init__(self)
-        self.config = validateDict(config, default)# dict
+        self.config = validateDict(config, self.default)# dict
         self.name = self.config["name"]# str
 
         # no image exception

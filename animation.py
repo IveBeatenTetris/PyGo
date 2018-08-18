@@ -3,17 +3,17 @@ from . utils import (
     )
 import pygame as pg
 
-default = {
-    "frames": [],
-    "sequence": [],
-    "duration": 100
-}
-
 class Animation(pg.sprite.Sprite):
     """An animated sprite class."""
+    # default values
+    default = {
+        "frames": [],
+        "sequence": [],
+        "duration": 100
+    }
     def __init__(self, config={}):
         """Constructor."""
-        self.config = validateDict(config, default)# dict
+        self.config = validateDict(config, self.default)# dict
         self.sequence = self.config["sequence"]# tuple / list
         self.duration = self.config["duration"]# int
         self.frames = self.config["frames"][# list

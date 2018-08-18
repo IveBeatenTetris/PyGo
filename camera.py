@@ -7,19 +7,19 @@ from .utils import (
     )
 from .player import Player
 from .map import Map
-# default values
-default = {
-    "size": (640, 480),
-    "border": None,
-    "scale": 1,
-    "track": None
-}
 
 class Camera(pg.Surface):
     """Surface object to render all captured objects on."""
+    # default values
+    default = {
+        "size": (640, 480),
+        "border": None,
+        "scale": 1,
+        "track": None
+    }
     def __init__(self, config={}):
         """Constructor."""
-        self.config = validateDict(config, default)# dict
+        self.config = validateDict(config, self.default)# dict
         pg.Surface.__init__(self, self.config["size"], pg.SRCALPHA)# pygame.surface
         self.rect = self.get_rect()# pygame.rect
         self.scale = self.config["scale"]# int

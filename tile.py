@@ -4,19 +4,19 @@ from . utils import (
     )
 import pygame as pg
 
-default = {
-    "image": "notile.png",
-    "id": 0,
-    "block": False,
-    "visible": True
-    }
-
 class Tile(pg.sprite.Sprite):
     """Cut out sprite from an image (tileset). It also holds extra information
     about being blockable etc."""
+    # default values
+    default = {
+        "image": "notile.png",
+        "id": 0,
+        "block": False,
+        "visible": True
+    }
     def __init__(self, config={}):
         """Constructor."""
-        self.config = validateDict(config, default)# dict
+        self.config = validateDict(config, self.default)# dict
         pg.sprite.Sprite.__init__(self)
         self.visible = self.config["visible"]# bool
         if type(self.config["image"]) is str:

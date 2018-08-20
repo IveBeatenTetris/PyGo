@@ -7,9 +7,12 @@ import os
 
 class AssetLoader:
     """Load assets in json format and append them to the assetloader."""
-    def __init__(self):
+    def __init__(self, path=None):
         """Constructor."""
-        self.path = PATH["assets"]# str
+        if path:
+            self.path = path# str
+        else:
+            self.path = PATH["assets"]# str
         self.images = self.get("images")# dict
         self.identities = self.get("identities")# dict
         self.tilesets = self.get("tilesets")# dict
@@ -20,8 +23,7 @@ class AssetLoader:
     def get(self, assetname):# dict
         """Load a json config from the given asset's name path."""
         collection = {}
-
-        assets = loadAssets(PATH[assetname])
+        assets = loadAssets(self.path + "\\" + assetname)
 
         for asset in assets:
             collection.update({asset["name"]: asset})

@@ -1,8 +1,9 @@
-from .utils import (
+from . utils import (
     PATH,
     loadAssets,
     loadJSON
     )
+from . collection import Collection
 import os
 
 class AssetLoader:
@@ -13,19 +14,19 @@ class AssetLoader:
             self.path = path# str
         else:
             self.path = PATH["assets"]# str
-        self.images = self.get("images")# dict
-        self.identities = self.get("identities")# dict
-        self.tilesets = self.get("tilesets")# dict
-        self.maps = self.get("maps")# dict
+        self.images = self.get("images")# collection
+        self.identities = self.get("identities")# collection
+        self.tilesets = self.get("tilesets")# collection
+        self.maps = self.get("maps")# collection
     def __repr__(self):# str
         """String representation."""
         return "<AssetLoader>"
     def get(self, assetname):# dict
         """Load a json config from the given asset's name path."""
-        collection = {}
+        collection = Collection()
         assets = loadAssets(self.path + "\\" + assetname)
 
         for asset in assets:
-            collection.update({asset["name"]: asset})
+            collection.add({asset["name"]: asset})
 
         return collection

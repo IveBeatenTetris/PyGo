@@ -1,12 +1,12 @@
 import pygame as pg
-from .utils import (
+from . utils import (
     validateDict,
     draw,
     drawBorder,
     scale
     )
-from .player import Player
-from .map import Map
+from . player import Player
+from . map import Map
 
 class Camera(pg.Surface):
     """Surface object to render all captured objects on."""
@@ -50,6 +50,11 @@ class Camera(pg.Surface):
                     if type(self.tracking) is Player:
                         self.move(obj.rect.center, "center")
                         draw(obj, surface, "center")
+                if type(obj) is pg.Surface:
+                    draw(obj, surface, (
+                        -self.rect.left,
+                        -self.rect.top
+                        ))
         # drawing a border to viszualize the size
         if self.border:
             draw(drawBorder(self.rect, self.config["border"]), surface)
@@ -65,6 +70,5 @@ class Camera(pg.Surface):
                 draw(surface, self, "center")
             else:
                 draw(surface, self)
-
         else:
             draw(surface, self)

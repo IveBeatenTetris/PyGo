@@ -41,7 +41,7 @@ class Player(pg.sprite.Sprite):
         self.framesize = self.config["framesize"]# tuple
         self.frames = getFrames(self.rawimage, self.framesize)# list
         self.image = self.frames[0]# pygame.surface
-        self.rect = ZRect(self.image.get_rect())# pygame.rect
+        self.rect = ZRect(self.image.get_rect())# pgzero.zrect
         self.speed = self.config["speed"]# float / int
         self.facing = "down"# str
         self.moving = False# bool

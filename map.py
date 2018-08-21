@@ -40,6 +40,7 @@ class Map(pg.Surface):
         for each in self.layers:
             # adding blockable positions from each layer
             self.blocks += self.layers[each]["blocks"]
+
             # draw each layer to surface
             self.blit(self.layers[each]["image"], (0, 0))
     def __repr__(self):# str

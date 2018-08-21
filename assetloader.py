@@ -1,7 +1,8 @@
 from . utils import (
     PATH,
     loadAssets,
-    loadJSON
+    loadJSON,
+    getPublicProperties
     )
 from . collection import Collection
 import os
@@ -18,9 +19,22 @@ class AssetLoader:
         self.identities = self.get("identities")# collection
         self.tilesets = self.get("tilesets")# collection
         self.maps = self.get("maps")# collection
-    def __repr__(self):# str
+    def __str__(self):# str
         """String representation."""
-        return "<AssetLoader>"
+        list = []
+
+        for k, v in getPublicProperties(self).items():
+            try:
+                t = v.type
+            except AttributeError:
+                t = type(v)
+
+            list.append("'{0}': {1}".format(k, t))
+
+        joined = "\n".join(list)
+        lines = "\n--- AssetLoader:\n" + joined + "\n---"
+
+        return lines
     def get(self, assetname):# dict
         """Load a json config from the given asset's name path."""
         collection = Collection()

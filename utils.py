@@ -28,6 +28,15 @@ def prettyPrint(data, sort=False, tabs=4):
         print("Nothing to pretty-print.")
 
 # class and object functions
+def getPublicProperties(obj):# dict
+    """Return a dict of all handwritten class properties."""
+    property_dict = {}
+
+    for each in obj.__dict__:
+        if each[:1] != "_":
+            property_dict.update({each : obj.__dict__[each]})
+
+    return property_dict
 def masterClass(object , masterclass):# bool
     """Check if object's master class matches the given one."""
     if object.__class__.__bases__[0] is masterclass:

@@ -3,11 +3,10 @@ class Collection(dict):
     def __init__(self, *arg, **kw):
         """Constructor."""
         super(Collection, self).__init__(*arg, **kw)
+        self.type = "<class 'Collection'>"
         self.names = []# list
         for each in iter(self):
             self.names.append(each)
-        if arg:
-            pass
     def __str__(self):
         """String representation."""
         list = []

@@ -85,6 +85,9 @@ def loadJSON(path):# dict
         js.update({"filepath": path})
 
     return js
+def thisPath(path):# str
+    """Return the path of the calling file's path."""
+    return "\\".join(path.split("\\")[0:-1])
 
 # dictionary operations
 def validateDict(config={}, defaults={}):# dict

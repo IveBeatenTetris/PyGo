@@ -1,3 +1,4 @@
+# dependencies
 from . utils import(
     PATH,
     validateDict,
@@ -85,3 +86,12 @@ class Map(pg.Surface):
                 tiles.append(tile)
 
         return tiles
+class TiledMap:
+    """A Map object generated from a tiled-map."""
+    def __init__(self, filename=None):
+        """Constructor."""
+        if filename is not None:
+            self.path = filename
+    def __str__(self):
+        """String representation."""
+        return str(self.__class__)

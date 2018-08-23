@@ -4,11 +4,45 @@ from . utils import(
     validateDict,
     createTiledMap,
     loadJSON,
-    perPixelAlpha
+    perPixelAlpha,
+    draw
     )
 from . tileset import Tileset
 import pygame as pg
 
+class Layer(pg.Surface):
+    """A TiledLayer representation."""
+    def __init__(self, config={}):
+        """Constructor."""
+        self.config = config
+        self.x = config["x"]# int
+        self.y = config["y"]# int
+        self.name = config["name"]# str
+        self.data = config["data"]# list
+        self.tiles = config["tiles"]# list
+        self.width = config["width"] * config["tilesize"][0]# int
+        self.height = config["height"] * config["tilesize"][1]# int
+        self.blocks = []# list
+        self.opacity = config["opacity"]# int
+        self.visible = config["visible"]# bool
+
+        pg.Surface.__init__(self, (self.width, self.height), pg.SRCALPHA)
+        self.rect = self.get_rect()# pygame.rect
+        self.rect.topleft = (self.x, self.y)# tuple
+
+        # final build
+        self._build()
+    def _build(self):
+        """To keep __init__() clean."""
+        tmap = createTiledMap(self.config, self.tiles)
+        self.blocks = tmap["blocks"]
+
+        # render transparent layer if opacity is not 0
+        if self.opacity != 1:
+            tmap["image"] = perPixelAlpha(tmap["image"], self.opacity)
+
+        # drawing map to layer surface
+        draw(tmap["image"], self, self.rect)
 class Map(pg.Surface):
     """A Map object generated from a tiled-map."""
     # default values
@@ -38,12 +72,13 @@ class Map(pg.Surface):
             )
         self.rect = self.get_rect()# pygame.rect
         self.blocks = []# list
-        for each in self.layers:
+
+        #for each in self.layers:
             # adding blockable positions from each layer
-            self.blocks += self.layers[each]["blocks"]
+            #self.blocks += self.layers[each]["blocks"]
 
             # draw each layer to surface
-            self.blit(self.layers[each]["image"], (0, 0))
+            #self.blit(self.layers[each]["image"], (0, 0))
     def __repr__(self):# str
         """String representation."""
         return "<Map('{0}', {1})>".format(self.name, str(self.size))
@@ -66,14 +101,14 @@ class Map(pg.Surface):
         layers = {}
 
         for each in self.config["layers"]:
-            tmap = createTiledMap(each, self.tiles)
-
-            # exception for layer 'shadows'
-            if each["name"] == "shadows":
-                tmap["image"] = perPixelAlpha(tmap["image"], 50)
 
             # updating layers
-            layers.update({each["name"]: tmap})
+            each.update({
+                "tiles": self.tiles,
+                "tilesize": self.tilesize
+                })
+            layer = Layer(each)
+            layers.update({each["name"]: layer})
 
         return layers
     def getTiles(self):# list
@@ -86,12 +121,3 @@ class Map(pg.Surface):
                 tiles.append(tile)
 
         return tiles
-class TiledMap:
-    """A Map object generated from a tiled-map."""
-    def __init__(self, filename=None):
-        """Constructor."""
-        if filename is not None:
-            self.path = filename
-    def __str__(self):
-        """String representation."""
-        return str(self.__class__)

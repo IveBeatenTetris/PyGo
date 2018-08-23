@@ -13,6 +13,6 @@ from . camera import Camera
 from . assetloader import AssetLoader
 from . animation import Animation
 from . player import Player
-from . map import Map, TiledMap
+from . map import Map
 from . tileset import Tileset
 from . tile import Tile

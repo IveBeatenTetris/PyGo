@@ -125,7 +125,7 @@ def createBackground(background, rect, bgrepeat=""):# pygame.surface
 
     return surface
 def createTiledMap(config, tiles):# dict
-    """drawing tiles on a pygame surface and return it in a dict together with
+    """Drawing tiles on a pygame surface and return it in a dict together with
     a list of wall rects."""
     tilesize = tiles[0].image.get_rect().size
 
@@ -208,8 +208,8 @@ def draw(object, destination, position=(0, 0)):# pygame.surface
             x = int(dsize[0] / 2) - int(osize[0] / 2)
             y = int(dsize[1] / 2) - int(osize[1] / 2)
             position = (x, y)
-    elif type(position) is pg.Rect:
-        position = position.topleft
+    # elif type(position) is pg.Rect:
+    #     position = position.topleft
 
     if type(object) is tuple:
         destination.fill(object, destination.get_rect())

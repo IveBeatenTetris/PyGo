@@ -14,5 +14,5 @@ from . assetloader import AssetLoader
 from . animation import Animation
 from . player import Player
 from . map import Map
-from . tileset import Tileset
+from . tileset import Tileset, Spritesheet
 from . tile import Tile

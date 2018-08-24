@@ -1,4 +1,4 @@
-from . utils import (
+from .utils import (
     PATH,
     validateDict
     )
@@ -18,6 +18,7 @@ class Tile(pg.sprite.Sprite):
         """Constructor."""
         self.config = validateDict(config, self.default)# dict
         pg.sprite.Sprite.__init__(self)
+        
         self.visible = self.config["visible"]# bool
         if type(self.config["image"]) is str:
             if self.config["image"] == "notile.png":

@@ -1,11 +1,19 @@
-import pygame as pg
 from .utils import (
     PATH,
     validateDict,
-    getFrames
+    getFrames,
+    draw
     )
 from .tile import Tile
+import pygame as pg
 
+class Spritesheet(pg.sprite.Sprite):
+    """docstring for SpriteSheet."""
+    def __init__(self, config={}):
+        pg.sprite.Sprite.__init__(self)
+    def __str__(self):
+        """String representation."""
+        return "<Spritesheet>"
 class Tileset(pg.Surface):
     """Holds all tiles as single objects in a list. Also itself is a pygame
     surface for previewing purpose."""
@@ -27,14 +35,16 @@ class Tileset(pg.Surface):
         else:
             self.path = "{0}\\{1}".format(PATH["tilesets"], self.name)# str
         self.imagepath = self.path + "\\" + self.config["image"]# str
-        self.image = pg.image.load(self.imagepath)# pygame.surface
+        self.image = pg.image.load(self.imagepath).convert()# pygame.surface
+
         pg.Surface.__init__(self, self.image.get_rect().size)
         self.tilesize = (# tuple
             self.config["tilewidth"],
             self.config["tileheight"]
             )
+
         self.tiles = self.__createTiles()# list
-        self.blit(self.image, (0, 0))
+        draw(self.image, self, (0, 0))
     def __repr__(self):# str
         """String representation."""
         return "<Tileset('{0}', tc={1})>".format(

@@ -1,3 +1,4 @@
+# dependencies
 from .utils import (
     PATH,
     validateDict,
@@ -7,16 +8,8 @@ from .utils import (
 from .tile import Tile
 import pygame as pg
 
-class Spritesheet(pg.sprite.Sprite):
-    """docstring for SpriteSheet."""
-    def __init__(self, config={}):
-        pg.sprite.Sprite.__init__(self)
-    def __str__(self):
-        """String representation."""
-        return "<Spritesheet>"
-class Tileset(pg.Surface):
-    """Holds all tiles as single objects in a list. Also itself is a pygame
-    surface for previewing purpose."""
+class Tileset:
+    """Holds all tiles as single objects in a list."""
     # default values
     default = {
         "name": "NoTileset",
@@ -25,26 +18,23 @@ class Tileset(pg.Surface):
         "tileheight": 16,
         "tilecount": 0,
         "tileproperties": {}
-    }
+        }
     def __init__(self, config={}):
         """Constructor."""
         self.config = validateDict(config, self.default)# dict
         self.name = self.config["name"]# str
         if self.config["image"] == "notileset.png":
-            self.path = PATH["sysimg"]# str
+            path = PATH["sysimg"]
         else:
-            self.path = "{0}\\{1}".format(PATH["tilesets"], self.name)# str
+            path = "{0}\\{1}".format(PATH["tilesets"], self.name)
+        self.path = path# str
         self.imagepath = self.path + "\\" + self.config["image"]# str
         self.image = pg.image.load(self.imagepath).convert()# pygame.surface
-
-        pg.Surface.__init__(self, self.image.get_rect().size)
         self.tilesize = (# tuple
             self.config["tilewidth"],
             self.config["tileheight"]
             )
-
         self.tiles = self.__createTiles()# list
-        draw(self.image, self, (0, 0))
     def __repr__(self):# str
         """String representation."""
         return "<Tileset('{0}', tc={1})>".format(
@@ -62,12 +52,12 @@ class Tileset(pg.Surface):
                 "id": i,
                 }
 
-            # adding optional properties
+            # additional properties
             if "tileproperties" in self.config:
                 props = self.config["tileproperties"]
                 if str(i) in props:
 
-                    # block-passing property
+                    # block passable?
                     try:
                         config["block"] = props[str(i)]["block"]
                     except KeyError:
@@ -78,7 +68,7 @@ class Tileset(pg.Surface):
                     except KeyError:
                         pass
 
-            # appending to the result-list
+            # appending to the resulting list
             tilelist.append(Tile(config))
 
         return tilelist

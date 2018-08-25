@@ -1,13 +1,29 @@
-import pygame as pg
-from . utils import (
+# dependencies
+from .utils import (
     validateDict,
     draw,
     drawBorder,
     scale
     )
-from . player import Player
-from . map import Map
+from .player import Player
+from .map import Map
+import pygame as pg
 
+class Camera2(pg.Rect):
+    """docstring for Camera2."""
+    default = {
+        "size": (640, 480),
+        "position": (0, 0),
+        "border": None,
+        "scale": 1,
+        "track": None
+        }
+    def __init__(self, config={}):
+        """Constructor."""
+        self.config = validateDict(config, self.default)# dict
+        self.size = self.config["size"]# tuple
+        self.topleft = self.config["position"]# tuple
+        print(self)
 class Camera(pg.Surface):
     """Surface object to render all captured objects on."""
     # default values
@@ -16,7 +32,7 @@ class Camera(pg.Surface):
         "border": None,
         "scale": 1,
         "track": None
-    }
+        }
     def __init__(self, config={}):
         """Constructor."""
         self.config = validateDict(config, self.default)# dict
@@ -55,9 +71,11 @@ class Camera(pg.Surface):
                         -self.rect.left,
                         -self.rect.top
                         ))
+
         # drawing a border to viszualize the size
         if self.border:
             draw(drawBorder(self.rect, self.config["border"]), surface)
+
         # final drawing step
         if self.scale > 1:
             surface = scale(surface, self.scale)

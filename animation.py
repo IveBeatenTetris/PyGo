@@ -1,4 +1,5 @@
-from . utils import (
+# dependencies
+from .utils import (
     validateDict
     )
 import pygame as pg
@@ -10,7 +11,7 @@ class Animation(pg.sprite.Sprite):
         "frames": [],
         "sequence": [],
         "duration": 100
-    }
+        }
     def __init__(self, config={}):
         """Constructor."""
         self.config = validateDict(config, self.default)# dict

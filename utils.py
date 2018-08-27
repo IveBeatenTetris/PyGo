@@ -18,6 +18,9 @@ IMG = {
     "windowbg": pg.image.load(PATH["sysimg"] + "\\bg01.png"),
     "windowicon": pg.image.load(PATH["sysimg"] + "\\ente.png")
 }
+RESOLUTIONS = {
+    "1920x1080": (1920, 1080)
+}
 
 # console
 def prettyPrint(data, sort=False, tabs=4):
@@ -102,7 +105,18 @@ def validateDict(config={}, defaults={}):# dict
 
     return validated
 
-# pygame lib
+# pygame operations
+def cut(surface, rect):# pygame.surface
+    """
+    Clip a part of the given surface and return it.
+    'rect' can be <Tuple> of 4 or a pygame rect.
+    Example: rect = (0, 0, 160, 120) // rect = pygame.Rect(0, 0, 160, 120).
+    Usage: surf = cut(display, (0, 0, 32, 32)).
+    """
+    surface.set_clip(rect)
+    clip = surface.subsurface(surface.get_clip())
+
+    return clip
 def createBackground(background, rect, bgrepeat=""):# pygame.surface
     """Create a background surface depending on what type was given."""
     surface = pg.Surface(rect.size)
@@ -125,8 +139,10 @@ def createBackground(background, rect, bgrepeat=""):# pygame.surface
 
     return surface
 def createTiledMap(config, tiles):# dict
-    """Drawing tiles on a pygame surface and return it in a dict together with
-    a list of wall rects."""
+    """
+    Drawing tiles on a pygame surface and return it in a dict together with
+    a list of wall rects.
+    """
     tilesize = tiles[0].image.get_rect().size
 
     blocks = []
@@ -195,9 +211,14 @@ def windowTitle(title):
     """Set the window's caption."""
     pg.display.set_caption(title)
 def draw(object, destination, position=(0, 0)):# pygame.surface
-    """Drawing a single or multiple objects to the destination surface. Then
-    return it."""
+    """
+    Drawing a single or multiple objects to the destination surface. Then
+    return it.
+    'position' can be tuple or pygame rect.
+    Usage: draw(player, display, pygame.Rect(0, 0, 160, 120)).
+    """
     if type(position) is str:
+        # draw object in the center
         if position == "center":
             try:
                 osize = object.get_rect().size
@@ -208,9 +229,8 @@ def draw(object, destination, position=(0, 0)):# pygame.surface
             x = int(dsize[0] / 2) - int(osize[0] / 2)
             y = int(dsize[1] / 2) - int(osize[1] / 2)
             position = (x, y)
-    # elif type(position) is pg.Rect:
-    #     position = position.topleft
 
+    # drawing depending on object's type
     if type(object) is tuple:
         destination.fill(object, destination.get_rect())
     elif object.__class__.__bases__[0] is pg.Surface or type(object) is pg.Surface:
@@ -220,15 +240,21 @@ def draw(object, destination, position=(0, 0)):# pygame.surface
     elif object.__class__ is pg.sprite.Group:
         for sprite in object:
             destination.blit(sprite.image, sprite.rect.topleft)
+
+    # recursively drawing objects from a list
     elif type(object) is list:
         for each in object:
             draw(each, destination, position)
 
     return destination
-def drawBorder(rect, config):# pygame surface
-    """Drawing a border to a surface and return it."""
-    size, line, color = config
-    surface = pg.Surface(rect.size, pg.SRCALPHA)
+def drawBorder(surface, rect, border):# pygame surface
+    """
+    Drawing a border to the given surface and return it.
+    Syntax for border is (BorderSize<Int>, LineStyle<Str>, Color<Tuple>).
+    Example: config = (1, 'solid', (255, 255, 255)).
+    Usage: surf = drawBorder(display, (0, 0, 16, 16), (1, 'solid', (0 ,0, 0))).
+    """
+    size, line, color = border
 
     pg.draw.lines(
         surface,
@@ -254,7 +280,11 @@ def perPixelAlpha(image, opacity=255):# pygame.surface
 
     return image
 def getFrames(image, framesize):# list
-    """return a list of frames clipped from an image."""
+    """
+    Return a list of frames clipped from an image.
+    'framesize' must be a tuple of 2.
+    Usage: frames = getFrames(spritesheet, (16, 16)).
+    """
     frames = []
 
     rows = int(image.get_rect().height / framesize[1])
@@ -277,13 +307,14 @@ def getFrames(image, framesize):# list
 
     return frames
 def scale(surface, factor):# pygame.surface
-    """Scaling the surface by an int-factor."""
-    width = int(surface.get_rect().width * factor)
-    height = int(surface.get_rect().height * factor)
+    """
+    Scaling a surface by an int-factor.
+    'factor' must be an integer.
+    Usage: surf = scale(display, 2).
+    """
+    size = [each * factor for each in surface.get_rect().size]
 
-    scaled = pg.transform.scale(surface, (width, height))
-
-    return scaled
+    return pg.transform.scale(surface, size)
 def repeatX(image, parent, pos=(0, 0)):# pygame.surface
     """Return a surface with x-line repeated image blitting."""
     child = image.get_rect()

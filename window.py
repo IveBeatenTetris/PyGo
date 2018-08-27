@@ -16,8 +16,8 @@ from .utils import (
     repeatXY,
     scale
     )
-import pygame as pg
 import sys, time
+import pygame as pg
 
 class Window:
     """pygame's window module in a box."""
@@ -31,8 +31,9 @@ class Window:
         #"background": PATH["sysimg"] + "\\bg01.png",
         #"background": (25, 25, 35)
         "backgroundrepeat": "xy",
-        "resizable": False
-    }
+        "resizable": False,
+        "zoom": 1,
+        }
     def __init__(self, config={}):
         """Constructor."""
         # pygame module init
@@ -51,6 +52,7 @@ class Window:
         self.clock = pg.time.Clock()# pygame.clock
         self.fps = self.config["fps"]# int
         self.gamespeed = self.config["gamespeed"]# int / float
+        self.zoom = self.config["zoom"]# int
 
         # window caption and icon
         pg.display.set_caption(self.config["caption"])
@@ -97,6 +99,17 @@ class Window:
             if event.type is pg.QUIT or (event.type is pg.KEYDOWN and event.key == pg.K_ESCAPE):
                 pg.quit()
                 sys.exit()
+
+            # scaling the game screen
+            if event.type is pg.MOUSEBUTTONDOWN and event.button == 4:
+                #self.zoom += 1
+                pass
+            if event.type is pg.MOUSEBUTTONDOWN and event.button == 5:
+                #self.zoom -= 1
+                pass
+            if self.zoom < 1:
+                #self.zoom = 1
+                pass
 
             # resizing the window
             if event.type is pg.VIDEORESIZE:

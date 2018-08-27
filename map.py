@@ -1,5 +1,5 @@
 # dependencies
-from . utils import(
+from .utils import(
     PATH,
     validateDict,
     createTiledMap,
@@ -7,7 +7,7 @@ from . utils import(
     perPixelAlpha,
     draw
     )
-from . tileset import Tileset
+from .tileset import Tileset
 import pygame as pg
 
 class Layer(pg.Surface):
@@ -54,7 +54,7 @@ class Map(pg.Surface):
         "tileheight": 10,
         "tilesets": {},
         "layers": {}
-    }
+        }
     def __init__(self, config={}):
         """Constructor."""
         self.config = validateDict(config, self.default)# dict
@@ -71,7 +71,7 @@ class Map(pg.Surface):
                 )
             )
         self.rect = self.get_rect()# pygame.rect
-        self.blocks = []# list
+        self.blocks = self.getBlocks()# list
 
         #for each in self.layers:
             # adding blockable positions from each layer
@@ -111,6 +111,15 @@ class Map(pg.Surface):
             layers.update({each["name"]: layer})
 
         return layers
+    def getBlocks(self):
+        """Return a list with all blockable coordinates."""
+        blocks = []
+
+        for name, layer in self.layers.items():
+            for block in layer.blocks:
+                blocks.append(block)
+
+        return blocks
     def getTiles(self):# list
         """Get tile objects from every appended tileset and return them in one
         single list."""

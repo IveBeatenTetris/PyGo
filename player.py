@@ -7,8 +7,8 @@ from .utils import (
     getPressedKeys,
     wait
     )
-from . zrect import ZRect
-from . animation import Animation
+from .zrect import ZRect
+from .animation import Animation
 import pygame as pg
 
 class Player(pg.sprite.Sprite):

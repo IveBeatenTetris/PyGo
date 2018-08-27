@@ -18,7 +18,7 @@ class Tile(pg.sprite.Sprite):
         """Constructor."""
         self.config = validateDict(config, self.default)# dict
         pg.sprite.Sprite.__init__(self)
-        
+
         self.visible = self.config["visible"]# bool
         if type(self.config["image"]) is str:
             if self.config["image"] == "notile.png":
@@ -33,7 +33,6 @@ class Tile(pg.sprite.Sprite):
             self.image = pg.Surface(self.image.get_rect().size, pg.SRCALPHA)# pygame.surface
         self.id = self.config["id"] + 1# int
         self.block = self.config["block"]# bool
-
     def __repr__(self):# str
         """String representation."""
         return "<Tile({0})>".format(self.id)

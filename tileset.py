@@ -29,7 +29,7 @@ class Tileset:
             path = "{0}\\{1}".format(PATH["tilesets"], self.name)
         self.path = path# str
         self.imagepath = self.path + "\\" + self.config["image"]# str
-        self.image = pg.image.load(self.imagepath).convert()# pygame.surface
+        self.image = pg.image.load(self.imagepath)# pygame.surface
         self.tilesize = (# tuple
             self.config["tilewidth"],
             self.config["tileheight"]

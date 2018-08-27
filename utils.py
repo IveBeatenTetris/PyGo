@@ -272,11 +272,22 @@ def drawBorder(surface, rect, border):# pygame surface
 
     return surface
 def perPixelAlpha(image, opacity=255):# pygame.surface
-    """Convert per pixel alpha from image."""
-    image.convert_alpha()
-    alpha_img = pg.Surface(image.get_rect().size , pg.SRCALPHA)
+    """
+    Convert per pixel alpha from an image surface.
+    'opacity' can be an int from 0~255 or a float from 0.01~1.0.
+    Usage: surface = perPixelAlpha(surface, 0.5)
+    """
+
+    # generate an int if opacity is a float type
+    if type(opacity) is float:
+        if opacity < 1.0:
+            opac = str(opacity).split(".")
+            opacity = int(int(opac[1]) * 255 / 100)
+
+    #image.convert_alpha()
+    alpha_img = pg.Surface(image.get_rect().size, pg.SRCALPHA)
     alpha_img.fill((255 , 255 , 255 , opacity))
-    image.blit(alpha_img , (0 , 0) , special_flags = pg.BLEND_RGBA_MULT)
+    image.blit(alpha_img , (0 , 0), special_flags = pg.BLEND_RGBA_MULT)
 
     return image
 def getFrames(image, framesize):# list

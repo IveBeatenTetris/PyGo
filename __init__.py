@@ -8,7 +8,7 @@ from . utils import *
 from . collection import Collection
 from . zrect import ZRect
 from . window import Window
-from . camera import Camera
+from . camera import Camera, Camera3
 from . assetloader import AssetLoader
 from . animation import Animation
 from . player import Player

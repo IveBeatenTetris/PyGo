@@ -1,5 +1,5 @@
 # dependencies
-import json, os, sys
+import json, os, sys, ctypes
 import pygame as pg
 
 # project and library pathes
@@ -48,6 +48,15 @@ def masterClass(object , masterclass):# bool
         bool = False
 
     return bool
+
+# system functions
+def systemResolution():#tuple
+    """Return the machine's display resolution."""
+    user32 = ctypes.windll.user32
+    user32.SetProcessDPIAware()
+    size = (user32.GetSystemMetrics(0), user32.GetSystemMetrics(1))
+
+    return size
 
 # files & directories
 def isPath(path):# bool
@@ -178,9 +187,16 @@ def getEvents():# pygame.events
     """Get pygame events."""
     return pg.event.get()
 def getDisplay(size, **kwargs):# pygame.display.surface
-    """Create a window display and return it. Customisation possible."""
+    """
+    Create a new window display and return it. Customisation possible.
+    Example: resizable = True
+    Usage: screen = getDisplay(((1920, 1080), resizable = True))
+    """
     for key, value in kwargs.items():
-        if key == "resizable":
+        if key == "fullscreen":
+            if value is True:
+                display = pg.display.set_mode(size , pg.FULLSCREEN)
+        elif key == "resizable":
             if value is True:
                 display = pg.display.set_mode(size , pg.RESIZABLE)
             else:

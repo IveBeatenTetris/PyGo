@@ -2,6 +2,7 @@
 from .utils import (
     PATH,
     IMG,
+    systemResolution,
     createBackground,
     getEvents,
     getPressedKeys,
@@ -114,6 +115,10 @@ class Window:
             # resizing the window
             if event.type is pg.VIDEORESIZE:
                 self.resize(event.size)
+
+            # going fullscreen
+            if event.type is pg.KEYDOWN and event.key == pg.K_F12:
+                self.resize(systemResolution())
 
         return events
     def getKeys(self):# tuple

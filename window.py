@@ -117,6 +117,7 @@ class Window:
                 self.resize(event.size)
 
             # going fullscreen
+            # // TODO get fullscreening to work
             if event.type is pg.KEYDOWN and event.key == pg.K_F12:
                 self.resize(systemResolution())
 

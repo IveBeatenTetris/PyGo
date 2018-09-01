@@ -226,12 +226,13 @@ def windowIcon(path):
 def windowTitle(title):
     """Set the window's caption."""
     pg.display.set_caption(title)
-def draw(object, destination, position=(0, 0)):# pygame.surface
+def draw(object, destination, position=(0, 0), blendmode=0):# pygame.surface
     """
     Drawing a single or multiple objects to the destination surface. Then
-    return it.
-    'position' can be tuple or pygame rect.
-    Usage: draw(player, display, pygame.Rect(0, 0, 160, 120)).
+    return itself. 'position' can be tuple or pygame rect. 'special_flags' is
+    for optional surface blending on each other.
+    Usage:
+    draw(player, display, pygame.Rect(0, 0, 160, 120), special_flags = pygame.BLEND_ADD)
     """
     if type(position) is str:
         # draw object in the center
@@ -248,19 +249,19 @@ def draw(object, destination, position=(0, 0)):# pygame.surface
 
     # drawing depending on object's type
     if type(object) is tuple:
-        destination.fill(object, destination.get_rect())
+        destination.fill(object, destination.get_rect(), special_flags = blendmode)
     elif object.__class__.__bases__[0] is pg.Surface or type(object) is pg.Surface:
-        destination.blit(object, position)
+        destination.blit(object, position, special_flags = blendmode)
     elif object.__class__.__bases__[0] is pg.sprite.Sprite:
-        destination.blit(object.image, position)
+        destination.blit(object.image, position, special_flags = blendmode)
     elif object.__class__ is pg.sprite.Group:
         for sprite in object:
-            destination.blit(sprite.image, sprite.rect.topleft)
+            destination.blit(sprite.image, sprite.rect.topleft, special_flags = blendmode)
 
     # recursively drawing objects from a list
     elif type(object) is list:
         for each in object:
-            draw(each, destination, position)
+            draw(each, destination, position, special_flags = blendmode)
 
     return destination
 def drawBorder(surface, rect, border):# pygame surface

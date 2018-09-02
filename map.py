@@ -12,14 +12,19 @@ import pygame as pg
 
 class Layer(pg.Surface):
     """A TiledLayer representation."""
+    # default values
+    default = {
+        "blend": None
+        }
     def __init__(self, config={}):
         """Constructor."""
-        self.config = config
+        self.config = config# dict
         self.x = config["x"]# int
         self.y = config["y"]# int
         self.name = config["name"]# str
         self.data = config["data"]# list
         self.tiles = config["tiles"]# list
+        self.blend = self.getBlendMode()# none / str / int
         self.width = config["width"] * config["tilesize"][0]# int
         self.height = config["height"] * config["tilesize"][1]# int
         self.blocks = []# list
@@ -32,17 +37,40 @@ class Layer(pg.Surface):
 
         # final build
         self._build()
+    def __repr__(self):# str
+        """String representation."""
+        return "<Layer('{0}', {1})>".format(self.name, str(self.rect.size))
     def _build(self):
         """To keep __init__() clean."""
         tmap = createTiledMap(self.config, self.tiles)
         self.blocks = tmap["blocks"]
+        surface = tmap["image"]
 
-        # render transparent layer if opacity is not 0
+        # render transparent layer if opacity is not 1.0 (standard)
         if self.opacity != 1:
-            tmap["image"] = perPixelAlpha(tmap["image"], self.opacity)
+            surface = perPixelAlpha(surface, self.opacity)
+
+        # use blending mode if active
+        if self.blend:
+            if self.blend == "add":
+                blend_mode = pg.BLEND_ADD
+            elif self.blend == "sub":
+                blend_mode = pg.BLEND_SUB
+            elif self.blend == "multi":
+                blend_mode = pg.BLEND_MULT
+
+            draw(surface, surface, blendmode = blend_mode)
 
         # drawing map to layer surface
-        draw(tmap["image"], self, self.rect)
+        draw(surface, self, self.rect)
+    def getBlendMode(self):
+        """Return the blend mode (str/int) for the current layer."""
+        try:
+            mode = self.config["properties"]["blend"]
+        except KeyError:
+            mode = self.default["blend"]
+
+        return mode
 class Map(pg.Surface):
     """A Map object generated from a tiled-map."""
     # default values

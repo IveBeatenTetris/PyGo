@@ -115,6 +115,30 @@ def validateDict(config={}, defaults={}):# dict
     return validated
 
 # pygame operations
+def blend(target, destination, position=(0, 0), mode=0):# pygame.surface
+    """
+    Blend target surface to destination and return it.
+    'target' & 'destination' both have to be a pygame.surface.
+    'position' has to be a tuple or pygame.rect.
+    'mode' needs to be an int or a pygame-blend constant. Can also be a str.
+    Example: mode = pygame.BLEND_ADD , mode = "add", mode = 1
+    Usage: screen = blend(screen, background, (0, 0), pygame.BLEND_ADD)
+    """
+    surface = pg.Surface(destination.get_rect().size, pg.SRCALPHA)
+
+    # getting blend mode right
+    if type(mode) is str:
+        if mode == "add":
+            mode = pg.BLEND_ADD
+        elif mode == "sub":
+            mode = pg.BLEND_SUB
+        elif mode == "multi":
+            mode = pg.BLEND_MULT
+
+    draw(destination, surface, position)
+    draw(target, surface, position, mode)
+
+    return surface
 def cut(surface, rect):# pygame.surface
     """
     Clip a part of the given surface and return it.

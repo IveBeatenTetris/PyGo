@@ -43,8 +43,9 @@ class Layer(pg.Surface):
     def _build(self):
         """To keep __init__() clean."""
         tmap = createTiledMap(self.config, self.tiles)
-        self.blocks = tmap["blocks"]
-        surface = tmap["image"]
+        surface = tmap["image"]# pygame.surface
+        self.blocks = tmap["blocks"]# list
+        self._playerstart = tmap["playerstart"]# pygame.rect
 
         # render transparent layer if opacity is not 1.0 (standard)
         if self.opacity != 1:
@@ -71,7 +72,7 @@ class Layer(pg.Surface):
             mode = self.default["blend"]
 
         return mode
-class Map(pg.Surface):
+class Map:
     """A Map object generated from a tiled-map."""
     # default values
     default = {
@@ -92,21 +93,18 @@ class Map(pg.Surface):
         self.tilesets = self.__createTilesets()# dict
         self.tiles = self.getTiles()# list
         self.layers = self.__createLayers()# dict
-        pg.Surface.__init__(
-                self, (
+        self.rect = pg.Rect(
+                (
+                    0,
+                    0
+                ),
+                (
                     self.size[0] * self.tilesize[0],
                     self.size[1] * self.tilesize[1]
                 )
-            )
-        self.rect = self.get_rect()# pygame.rect
+            )# pygame.rect
         self.blocks = self.getBlocks()# list
-
-        #for each in self.layers:
-            # adding blockable positions from each layer
-            #self.blocks += self.layers[each]["blocks"]
-
-            # draw each layer to surface
-            #self.blit(self.layers[each]["image"], (0, 0))
+        self.playerstart = self.getPlayerStart()
     def __repr__(self):# str
         """String representation."""
         return "<Map('{0}', {1})>".format(self.name, str(self.size))
@@ -143,11 +141,20 @@ class Map(pg.Surface):
         """Return a list with all blockable coordinates."""
         blocks = []
 
-        for name, layer in self.layers.items():
+        for _, layer in self.layers.items():
             for block in layer.blocks:
                 blocks.append(block)
 
         return blocks
+    def getPlayerStart(self):
+        """Return a pygame.rect if a layer has a player_start property."""
+        ps = None
+
+        for _, layer in self.layers.items():
+            if layer._playerstart:
+                ps = layer._playerstart
+
+        return ps
     def getTiles(self):# list
         """Get tile objects from every appended tileset and return them in one
         single list."""

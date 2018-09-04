@@ -52,19 +52,24 @@ class Tileset:
                 "id": i,
                 }
 
-            # additional properties
+            # additional tile properties
             if "tileproperties" in self.config:
                 props = self.config["tileproperties"]
                 if str(i) in props:
 
-                    # block passable?
+                    # tile passable?
                     try:
                         config["block"] = props[str(i)]["block"]
                     except KeyError:
                         pass
-                    # block visibility
+                    # tile visibility
                     try:
                         config["visible"] = props[str(i)]["visible"]
+                    except KeyError:
+                        pass
+                    # tile name
+                    try:
+                        config["name"] = props[str(i)]["name"]
                     except KeyError:
                         pass
 

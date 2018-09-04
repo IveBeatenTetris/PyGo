@@ -174,7 +174,7 @@ def createBackground(background, rect, bgrepeat=""):# pygame.surface
 def createTiledMap(config, tiles):# dict
     """
     Drawing tiles on a pygame surface and return it in a dict together with
-    a list of wall rects.
+    a list of wall rects and other special blocks with their position.
     """
     tilesize = tiles[0].image.get_rect().size
 
@@ -185,6 +185,7 @@ def createTiledMap(config, tiles):# dict
             config["height"] * tilesize[1]
         ),
         pg.SRCALPHA)
+    playerstart = None
 
     i = 0
     for row in range(config["height"]):
@@ -195,17 +196,24 @@ def createTiledMap(config, tiles):# dict
             # only draw tile if area isn't empty
             if config["data"][i] != 0:
                 tile = tiles[config["data"][i] - 1]
+                rect = pg.Rect((x, y), tile.image.get_rect().size)
                 surface.blit(tile.image, (x, y))
 
                 # add a block rect to blocklist if tile is not passable
                 if tile.block:
-                    blocks.append(pg.Rect((x, y), tile.image.get_rect().size))
+                    blocks.append(rect)
+
+                # set player-start position if there is a tile placed for that
+                if tile.name:
+                    if tile.name == "player_start":
+                        playerstart = rect
 
             i += 1
 
     return {
         "image": surface,
-        "blocks": blocks
+        "blocks": blocks,
+        "playerstart": playerstart
         }
 def getEvents():# pygame.events
     """Get pygame events."""

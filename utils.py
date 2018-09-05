@@ -68,8 +68,10 @@ def isPath(path):# bool
 
     return bool
 def loadAssets(path):# list
-    """Walk the assets-directory and open each json file. Plus appending
-    file name and file path to the json file."""
+    """
+    Walk the assets-directory and open each json file. Plus appending
+    file name and file path to the json file.
+    """
     list = []
 
     for dirs in os.walk(path):
@@ -85,6 +87,7 @@ def loadAssets(path):# list
                     "type": "image",
                     "filepath": dirs[0]
                 }
+                
                 list.append(config)
 
     return list

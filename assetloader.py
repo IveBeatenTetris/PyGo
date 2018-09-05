@@ -1,10 +1,10 @@
-from . utils import (
+from .utils import (
     PATH,
     loadAssets,
     loadJSON,
     getPublicProperties
     )
-from . collection import Collection
+from .collection import Collection
 import os
 
 class AssetLoader:

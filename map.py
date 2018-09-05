@@ -127,14 +127,19 @@ class Map:
         layers = {}
 
         for each in self.config["layers"]:
+            # tiled layer
+            if each["type"] == "tilelayer":
+                # updating layers
+                each.update({
+                    "tiles": self.tiles,
+                    "tilesize": self.tilesize
+                    })
+                layer = Layer(each)
+                layers.update({each["name"]: layer})
 
-            # updating layers
-            each.update({
-                "tiles": self.tiles,
-                "tilesize": self.tilesize
-                })
-            layer = Layer(each)
-            layers.update({each["name"]: layer})
+            # group layer
+            elif each["type"] == "group":
+                pass
 
         return layers
     def getBlocks(self):

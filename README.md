@@ -3,4 +3,4 @@ pygame simplified
 
 ## example
 
-![example game](example)
+![example game](example.gif)

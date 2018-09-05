@@ -1,3 +1,4 @@
+# dependencies
 from .utils import (
     PATH,
     validateDict,
@@ -29,8 +30,7 @@ class Player(pg.sprite.Sprite):
         pg.sprite.Sprite.__init__(self)
         self.config = validateDict(config, self.default)# dict
         self.name = self.config["name"]# str
-
-        # no image exception
+        # no-image exception
         if self.config["image"] == "noimage.png":
             self.path = PATH["sysimg"]# str
         else:
@@ -76,7 +76,7 @@ class Player(pg.sprite.Sprite):
             self.config["collisionbox"] = pg.Rect(self.collisionbox)# pygame.rect
     def __repr__(self):# str
         """String representation."""
-        return "<Player({0})".format(str(self.rect.topleft))
+        return "<Player({0})>".format(str(self.rect.topleft))
     # //TODO get this collision shit together
     def __moveSingleAxis(self, pos, blocks):
         """Dirty method to check for collisions and moving the player to the
@@ -168,3 +168,16 @@ class Player(pg.sprite.Sprite):
                     self.image,
                     pg.Rect(self.config["collisionbox"]).topleft
                 )
+class NPC(pg.sprite.Sprite):
+    """Representing a not-playable character."""
+    # default values
+    default = {
+
+        }
+    def __init__(self, config={}):
+        """Constructor."""
+        self.image = pg.Surface((50, 50), pg.SRCALPHA)
+        self.image.fill((255, 255, 255))
+    def __repr__(self):# str
+        """String representation."""
+        return "<NPC()>"

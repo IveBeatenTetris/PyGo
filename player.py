@@ -5,12 +5,12 @@ from .utils import (
     draw,
     getFrames,
     drawBorder,
-    getPressedKeys,
-    wait
+    getPressedKeys
     )
 from .zrect import ZRect
 from .animation import Animation
 import pygame as pg
+eval
 
 class Player(pg.sprite.Sprite):
     """Representing a playable character."""
@@ -21,7 +21,7 @@ class Player(pg.sprite.Sprite):
         "framesize": [50, 50],
         "speed": 1,
         "border": None,
-        #"border": [1, "solid", [255, 0, 0]],
+        # "border": [1, "solid", [255, 0, 0]],
         "animationspeed": 25,
         "collisionbox": None
         }
@@ -79,8 +79,10 @@ class Player(pg.sprite.Sprite):
         return "<Player({0})>".format(str(self.rect.topleft))
     # //TODO get this collision shit together
     def __moveSingleAxis(self, pos, blocks):
-        """Dirty method to check for collisions and moving the player to the
-        right position."""
+        """
+        Dirty method to check for collisions and moving the player to the
+        right position.
+        """
         self.rect.left = self.rect.left + pos[0]
         self.rect.top = self.rect.top + pos[1]
         self.collisionbox.topleft = (

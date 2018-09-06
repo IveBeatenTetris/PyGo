@@ -1,5 +1,7 @@
+"""The whole library is based on these main functions."""
+
 # dependencies
-import json, os, sys, ctypes
+import json, os, ctypes
 import pygame as pg
 
 # project and library pathes
@@ -7,8 +9,8 @@ PATH = {
     "go": os.path.dirname(__file__),
     "sysimg": os.path.dirname(__file__) + "\\images",
     "root": os.getcwd(),
-    "assets" : os.getcwd() + "\\assets",
-    "images" : os.getcwd() + "\\assets\\images",
+    "assets": os.getcwd() + "\\assets",
+    "images": os.getcwd() + "\\assets\\images",
     "maps": os.getcwd() + "\\assets\\maps",
     "tilesets": os.getcwd() + "\\assets\\tilesets",
     "identities": os.getcwd() + "\\assets\\identities"
@@ -37,10 +39,10 @@ def getPublicProperties(obj):# dict
 
     for each in obj.__dict__:
         if each[:1] != "_":
-            property_dict.update({each : obj.__dict__[each]})
+            property_dict.update({each: obj.__dict__[each]})
 
     return property_dict
-def masterClass(object , masterclass):# bool
+def masterClass(object, masterclass):# bool
     """Check if object's master class matches the given one."""
     if object.__class__.__bases__[0] is masterclass:
         bool = True
@@ -50,7 +52,7 @@ def masterClass(object , masterclass):# bool
     return bool
 
 # system functions
-def systemResolution():#tuple
+def systemResolution():# tuple
     """Return the machine's display resolution."""
     user32 = ctypes.windll.user32
     user32.SetProcessDPIAware()
@@ -87,7 +89,7 @@ def loadAssets(path):# list
                     "type": "image",
                     "filepath": dirs[0]
                 }
-                
+
                 list.append(config)
 
     return list
@@ -161,7 +163,7 @@ def createBackground(background, rect, bgrepeat=""):# pygame.surface
         surface = pg.Surface(rect.size)
         surface.fill(background)
     elif type(background) is str:
-        object = pg.image.load(background).convert()
+        surface = pg.image.load(background).convert()
 
     if masterClass(background, pg.Surface) or type(background) is pg.Surface:
         if bgrepeat == "x":
@@ -230,10 +232,10 @@ def getDisplay(size, **kwargs):# pygame.display.surface
     for key, value in kwargs.items():
         if key == "fullscreen":
             if value is True:
-                display = pg.display.set_mode(size , pg.FULLSCREEN)
+                display = pg.display.set_mode(size, pg.FULLSCREEN)
         elif key == "resizable":
             if value is True:
-                display = pg.display.set_mode(size , pg.RESIZABLE)
+                display = pg.display.set_mode(size, pg.RESIZABLE)
             else:
                 display = pg.display.set_mode(size)
 
@@ -241,14 +243,6 @@ def getDisplay(size, **kwargs):# pygame.display.surface
 def getPressedKeys():# pygame.event.keys
     """Get pygame.event's pressed-keys."""
     return pg.key.get_pressed()
-def wait(amount):
-    # t = pg.time.get_ticks()
-    # getTicksLastFrame = t
-    # # deltaTime in seconds.
-    # deltaTime = (t - getTicksLastFrame) / 1000.0
-    # print(deltaTime)
-    ms = pg.time.Clock().tick(amount)
-    #print(ms)
 def windowIcon(path):
     """Create an icon for the window from a png file."""
     if type(path) is pg.Surface:
@@ -256,7 +250,7 @@ def windowIcon(path):
     elif type(path) is str:
         icon = pg.image.load(path)
 
-    icon = pg.transform.scale(icon , (32 , 32))
+    icon = pg.transform.scale(icon, (32, 32))
     pg.display.set_icon(icon)
 def windowTitle(title):
     """Set the window's caption."""
@@ -267,7 +261,12 @@ def draw(object, destination, position=(0, 0), blendmode=0):# pygame.surface
     return itself. 'position' can be tuple or pygame rect. 'special_flags' is
     for optional surface blending on each other.
     Usage:
-    draw(player, display, pygame.Rect(0, 0, 160, 120), special_flags = pygame.BLEND_ADD)
+    draw(
+        player,
+        display,
+        pygame.Rect(0, 0, 160, 120),
+        special_flags=pygame.BLEND_ADD
+    )
     """
     if type(position) is str:
         # draw object in the center
@@ -284,19 +283,23 @@ def draw(object, destination, position=(0, 0), blendmode=0):# pygame.surface
 
     # drawing depending on object's type
     if type(object) is tuple:
-        destination.fill(object, destination.get_rect(), special_flags = blendmode)
+        destination.fill(object, destination.get_rect(), special_flags=blendmode)
     elif object.__class__.__bases__[0] is pg.Surface or type(object) is pg.Surface:
-        destination.blit(object, position, special_flags = blendmode)
+        destination.blit(object, position, special_flags=blendmode)
     elif object.__class__.__bases__[0] is pg.sprite.Sprite:
-        destination.blit(object.image, position, special_flags = blendmode)
+        destination.blit(object.image, position, special_flags=blendmode)
     elif object.__class__ is pg.sprite.Group:
         for sprite in object:
-            destination.blit(sprite.image, sprite.rect.topleft, special_flags = blendmode)
+            destination.blit(
+                sprite.image,
+                sprite.rect.topleft,
+                special_flags=blendmode
+            )
 
     # recursively drawing objects from a list
     elif type(object) is list:
         for each in object:
-            draw(each, destination, position, special_flags = blendmode)
+            draw(each, destination, position, special_flags=blendmode)
 
     return destination
 def drawBorder(surface, rect, border):# pygame surface
@@ -336,10 +339,10 @@ def perPixelAlpha(image, opacity=255):# pygame.surface
             opac = str(opacity).split(".")
             opacity = int(int(opac[1]) * 255 / 100)
 
-    #image.convert_alpha()
+    # image.convert_alpha()
     alpha_img = pg.Surface(image.get_rect().size, pg.SRCALPHA)
-    alpha_img.fill((255 , 255 , 255 , opacity))
-    image.blit(alpha_img , (0 , 0), special_flags = pg.BLEND_RGBA_MULT)
+    alpha_img.fill((255, 255, 255, opacity))
+    image.blit(alpha_img, (0, 0), special_flags=pg.BLEND_RGBA_MULT)
 
     return image
 def getFrames(image, framesize):# list

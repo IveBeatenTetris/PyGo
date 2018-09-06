@@ -1,11 +1,9 @@
 from .utils import (
     PATH,
     loadAssets,
-    loadJSON,
     getPublicProperties
     )
 from .collection import Collection
-import os
 
 class AssetLoader:
     """Load assets in json format and append them to the assetloader."""

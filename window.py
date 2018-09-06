@@ -1,6 +1,5 @@
 # dependencies
 from .utils import (
-    PATH,
     IMG,
     systemResolution,
     createBackground,
@@ -10,12 +9,7 @@ from .utils import (
     windowIcon,
     windowTitle,
     draw,
-    validateDict,
-    masterClass,
-    repeatX,
-    repeatY,
-    repeatXY,
-    scale
+    validateDict
     )
 import sys, time
 import pygame as pg
@@ -29,8 +23,7 @@ class Window:
         "fps": 60,
         "gamespeed": 1,
         "background": IMG["windowbg"],
-        #"background": PATH["sysimg"] + "\\bg01.png",
-        #"background": (25, 25, 35)
+        # "background": (25, 25, 35)
         "backgroundrepeat": "xy",
         "resizable": False,
         "zoom": 1,
@@ -44,12 +37,15 @@ class Window:
         self.resizable = self.config["resizable"]# bool
         self.display = getDisplay(# pygame surface
             self.config["size"],
-            resizable = self.resizable
+            resizable=self.resizable
             )
         self.rect = self.display.get_rect()# pygame rect
         self.background = self.config["background"]# str / tuple / pygame.surface
         self.backgroundrepeat = self.config["backgroundrepeat"]# str
-        self.bg = createBackground(self.background, self.rect, self.backgroundrepeat)# pygame.surface
+        self.bg = createBackground(# pygame.surface
+            self.background,
+            self.rect,
+            self.backgroundrepeat)
         self.clock = pg.time.Clock()# pygame.clock
         self.fps = self.config["fps"]# int
         self.gamespeed = self.config["gamespeed"]# int / float
@@ -106,10 +102,10 @@ class Window:
                 #self.zoom += 1
                 pass
             if event.type is pg.MOUSEBUTTONDOWN and event.button == 5:
-                #self.zoom -= 1
+                # self.zoom -= 1
                 pass
             if self.zoom < 1:
-                #self.zoom = 1
+                # self.zoom = 1
                 pass
 
             # resizing the window
@@ -123,4 +119,5 @@ class Window:
 
         return events
     def getKeys(self):# tuple
+        """Quick method to get pressed keys instantly."""
         return getPressedKeys()

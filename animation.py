@@ -1,7 +1,5 @@
 # dependencies
-from .utils import (
-    validateDict
-    )
+from .utils import validateDict
 import pygame as pg
 
 class Animation(pg.sprite.Sprite):
@@ -18,7 +16,7 @@ class Animation(pg.sprite.Sprite):
         self.sequence = self.config["sequence"]# tuple / list
         self.duration = self.config["duration"]# int
         self.frames = self.config["frames"][# list
-            self.sequence[0] : self.sequence[-1] + 1
+            self.sequence[0]: self.sequence[-1] + 1
             ]
         pg.sprite.Sprite.__init__(self)# pygame.sprite
         self.pointer = 0# int
@@ -27,8 +25,10 @@ class Animation(pg.sprite.Sprite):
         self.timer = self.duration + 1# int
         self.timemod = int(self.timer / self.framecount)# int
     def update(self):
-        """Updating the pointer's position. The active frame is always drawn to
-        the animation image surface."""
+        """
+        Updating the pointer's position. The active frame is always drawn to
+        the animation image surface.
+        """
         for i in range(self.framecount):
             if self.timer == int((i) * self.timemod):
                 self.nextFrame()

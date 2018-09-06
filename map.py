@@ -1,5 +1,5 @@
 # dependencies
-from .utils import(
+from .utils import (
     PATH,
     validateDict,
     createTiledMap,
@@ -60,7 +60,7 @@ class Layer(pg.Surface):
             elif self.blend == "multi":
                 blend_mode = pg.BLEND_MULT
 
-            draw(surface, surface, blendmode = blend_mode)
+            draw(surface, surface, blendmode=blend_mode)
 
         # drawing map to layer surface
         draw(surface, self, self.rect)
@@ -89,7 +89,10 @@ class Map:
         self.config = validateDict(config, self.default)# dict
         self.name = self.config["name"]# str
         self.size = (self.config["width"], self.config["height"])# tuple
-        self.tilesize = (self.config["tilewidth"], self.config["tileheight"])# tuple
+        self.tilesize = (# tuple
+            self.config["tilewidth"],
+            self.config["tileheight"]
+            )
         self.tilesets = self.__createTilesets()# dict
         self.tiles = self.getTiles()# list
         self.layers = self.__createLayers()# dict
@@ -122,8 +125,10 @@ class Map:
 
         return tilesets
     def __createLayers(self):# dict
-        """Return a dict of layers. Each layer is an own dict with several
-        attributes."""
+        """
+        Return a dict of layers. Each layer is an own dict with several
+        attributes.
+        """
         layers = {}
 
         for each in self.config["layers"]:
@@ -161,8 +166,10 @@ class Map:
 
         return ps
     def getTiles(self):# list
-        """Get tile objects from every appended tileset and return them in one
-        single list."""
+        """
+        Get tile objects from every appended tileset and return them in one
+        single list.
+        """
         tiles = []
 
         for k, v in self.tilesets.items():

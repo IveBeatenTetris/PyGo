@@ -2,8 +2,7 @@
 from .utils import (
     PATH,
     validateDict,
-    getFrames,
-    draw
+    getFrames
     )
 from .tile import Tile
 import pygame as pg

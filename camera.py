@@ -1,15 +1,12 @@
+"""
+The camera module is used to calculate positions of everything thats going
+on a map. Use this pygame.rect to draw everything in relative positions to the
+tracked object's position.
+"""
 # dependencies
-from .utils import (
-    systemResolution,
-    validateDict,
-    draw,
-    drawBorder,
-    scale
-    )
-from .player import Player
-from .map import Map
+from .utils import validateDict
 import pygame as pg
-
+# classes
 class Camera(pg.Rect):
     """docstring for Camera2."""
     default = {
@@ -27,15 +24,13 @@ class Camera(pg.Rect):
         self.track = self.config["track"]# none / object (pygame.surface)
         self.zoomfactor = self.config["zoomfactor"]# int
     def zoom(self, factor):
-        """Change the zoomfactor of the camera rect. Doesn't change the camera
-        size."""
+        """
+        Change the zoomfactor of the camera rect. Doesn't change the camera
+        size.
+        """
         if self.zoomfactor + factor < 1:
             self.zoomfactor = 1
         elif self.zoomfactor + factor > 3:
             self.zoomfactor = 3
         else:
             self.zoomfactor = self.zoomfactor + factor
-
-        # zoomfactor 4 holds a system specific resolution for the camera
-        #if self.zoomfactor == 3:
-            #self.size = [each / 2 for each in systemResolution()]

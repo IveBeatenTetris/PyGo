@@ -7,7 +7,7 @@ from .utils import (
     drawBorder,
     getPressedKeys
     )
-# from .zrect import ZRect
+from .zrect import ZRect
 from .animation import Animation
 import pygame as pg
 # classes
@@ -88,7 +88,7 @@ class Player(Entity):
     def __init__(self, config={}):
         """Constructor."""
         Entity.__init__(self, config)# entity
-        #self.rect = ZRect(self.image.get_rect())# pgzero.zrect
+        self.rect = ZRect(self.image.get_rect())# pgzero.zrect
     def __repr__(self):# str
         """String representation."""
         return "<Player({0}, {1})>".format(

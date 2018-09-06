@@ -15,41 +15,7 @@ class Entity(pg.sprite.Sprite):
     """Every form of ingame agency will be based of this class."""
     # default values
     default = {
-        "image": "noimage.png",
-        "filepath": PATH["sysimg"],
-        "filename": "noimage.png",
-        }
-    def __init__(self, config={}):
-        """Constructor."""
-        self.config = validateDict(config, self.default)# dict
-        self.path = "{0}\\{1}".format(# str
-            self.config["filepath"],
-            self.config["image"]
-            )
-        pg.sprite.Sprite.__init__(self)
-        self.image = pg.image.load(self.path).convert()# pygame.surface
-        self.rect = self.image.get_rect()# pygame.rect
-        #self.image.fill((0, 0, 0))
-    def __repr__(self):# str
-        """String representation."""
-        return "<Entity()>"
-    def move(self, blocks=[]):
-        """."""
-        pass
-class NPC(Entity):
-    """Representing a not-playable character."""
-    def __init__(self, config={}):
-        """Constructor."""
-        Entity.__init__(self, config)# entity
-    def __repr__(self):# str
-        """String representation."""
-        return "<NPC()>"
-
-class Player(pg.sprite.Sprite):
-    """Representing a playable character."""
-    # default values
-    default = {
-        "name": "Player1",
+        "name": "NoName",
         "image": "noimage.png",
         "filepath": PATH["sysimg"],
         "filename": "noimage.png",
@@ -62,19 +28,18 @@ class Player(pg.sprite.Sprite):
         }
     def __init__(self, config={}):
         """Constructor."""
-        pg.sprite.Sprite.__init__(self)
         self.config = validateDict(config, self.default)# dict
         self.name = self.config["name"]# str
-        # no-image exception
-        self.path = "{0}".format(# str
-            self.config["filepath"]
+        self.path = "{0}\\{1}".format(# str
+            self.config["filepath"],
+            self.config["image"]
             )
-        self.imagepath = self.path + "\\" + self.config["image"]# str
-        self.rawimage = pg.image.load(self.imagepath)# pygame.surface
+        pg.sprite.Sprite.__init__(self)
+        self.rawimage = pg.image.load(self.path)# pygame.surface
         self.framesize = self.config["framesize"]# tuple
         self.frames = getFrames(self.rawimage, self.framesize)# list
         self.image = self.frames[0]# pygame.surface
-        self.rect = ZRect(self.image.get_rect())# pgzero.zrect
+        self.rect = self.image.get_rect()# pygame.rect
         self.speed = self.config["speed"]# float / int
         self.facing = "down"# str
         self.moving = False# bool
@@ -109,7 +74,27 @@ class Player(pg.sprite.Sprite):
             self.config["collisionbox"] = pg.Rect(self.collisionbox)# pygame.rect
     def __repr__(self):# str
         """String representation."""
-        return "<Player({0})>".format(str(self.rect.topleft))
+        return "<Entity()>"
+class NPC(Entity):
+    """Representing a not-playable character."""
+    def __init__(self, config):
+        """Constructor."""
+        Entity.__init__(self, config)# entity
+    def __repr__(self):# str
+        """String representation."""
+        return "<NPC()>"
+class Player(Entity):
+    """Representing a playable character."""
+    def __init__(self, config={}):
+        """Constructor."""
+        Entity.__init__(self, config)# entity
+        #self.rect = ZRect(self.image.get_rect())# pgzero.zrect
+    def __repr__(self):# str
+        """String representation."""
+        return "<Player({0}, {1})>".format(
+            self.rect.topleft,
+            self.rect.size
+            )
     # //TODO get this collision shit together
     def __moveSingleAxis(self, pos, blocks):
         """

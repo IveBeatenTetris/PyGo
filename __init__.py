@@ -15,3 +15,4 @@ from .player import Player, NPC
 from .map import Map
 from .tileset import Tileset
 from .tile import Tile
+from .image import Image

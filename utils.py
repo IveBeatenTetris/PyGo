@@ -283,7 +283,10 @@ def draw(object, destination, position=(0, 0), blendmode=0):# pygame.surface
 
     # drawing depending on object's type
     if type(object) is tuple:
-        destination.fill(object, destination.get_rect(), special_flags=blendmode)
+        destination.fill(
+            object, destination.get_rect(),
+            special_flags=blendmode
+            )
     elif object.__class__.__bases__[0] is pg.Surface or type(object) is pg.Surface:
         destination.blit(object, position, special_flags=blendmode)
     elif object.__class__.__bases__[0] is pg.sprite.Sprite:

@@ -307,7 +307,7 @@ def draw(object, destination, position=(0, 0), blendmode=0):# pygame.surface
     # recursively drawing objects from a list
     elif type(object) is list:
         for each in object:
-            draw(each, destination, position, special_flags=blendmode)
+            draw(each, destination, position, blendmode=blendmode)
 
     return destination
 def drawBorder(surface, rect, border):# pygame surface

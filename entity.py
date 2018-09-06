@@ -15,21 +15,35 @@ class Entity(pg.sprite.Sprite):
     """Every form of ingame agency will be based of this class."""
     # default values
     default = {
+        "image": "noimage.png",
         "filepath": PATH["sysimg"],
         "filename": "noimage.png",
         }
     def __init__(self, config={}):
         """Constructor."""
         self.config = validateDict(config, self.default)# dict
-        pg.sprite.Sprite.__init__(self)
         self.path = "{0}\\{1}".format(# str
             self.config["filepath"],
-            self.config["filename"]
+            self.config["image"]
             )
-        self.image = pg.Surface((50, 50), pg.SRCALPHA)
+        pg.sprite.Sprite.__init__(self)
+        self.image = pg.image.load(self.path).convert()# pygame.surface
+        self.rect = self.image.get_rect()# pygame.rect
+        #self.image.fill((0, 0, 0))
     def __repr__(self):# str
         """String representation."""
         return "<Entity()>"
+    def move(self, blocks=[]):
+        """."""
+        pass
+class NPC(Entity):
+    """Representing a not-playable character."""
+    def __init__(self, config={}):
+        """Constructor."""
+        Entity.__init__(self, config)# entity
+    def __repr__(self):# str
+        """String representation."""
+        return "<NPC()>"
 
 class Player(pg.sprite.Sprite):
     """Representing a playable character."""
@@ -189,12 +203,3 @@ class Player(pg.sprite.Sprite):
                     self.image,
                     pg.Rect(self.config["collisionbox"]).topleft
                 )
-class NPC(Entity):
-    """Representing a not-playable character."""
-    def __init__(self, config={}):
-        """Constructor."""
-        Entity.__init__(self, config)# entity
-
-    def __repr__(self):# str
-        """String representation."""
-        return "<NPC()>"

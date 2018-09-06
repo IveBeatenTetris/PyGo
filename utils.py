@@ -13,7 +13,7 @@ PATH = {
     "images": os.getcwd() + "\\assets\\images",
     "maps": os.getcwd() + "\\assets\\maps",
     "tilesets": os.getcwd() + "\\assets\\tilesets",
-    "identities": os.getcwd() + "\\assets\\identities"
+    "entities": os.getcwd() + "\\assets\\entities"
 }
 IMG = {
     "noimage": pg.image.load(PATH["sysimg"] + "\\noimage.png"),
@@ -99,7 +99,12 @@ def loadJSON(path):# dict
         content = "".join(text.readlines())
         js = json.loads(content)
         js.update({"name": path.split("\\")[-2]})
-        js.update({"filepath": path})
+        js.update({"path": path})
+        # //TODO tidy up
+        s = path.split("\\")
+        s = os.path.join(*s, "\\", *s[1:-1])
+        js.update({"filepath": s})
+        js.update({"filename": path.split("\\")[-1]})
 
     return js
 def thisPath(path):# str

@@ -14,7 +14,7 @@ class AssetLoader:
         else:
             self.path = PATH["assets"]# str
         self.images = self.get("images")# collection
-        self.identities = self.get("identities")# collection
+        self.entities = self.get("entities")# collection
         self.tilesets = self.get("tilesets")# collection
         self.maps = self.get("maps")# collection
     def __str__(self):# str

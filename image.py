@@ -18,7 +18,7 @@ class Image(pg.Surface):
             self.config["filename"]
             )
         # # open image and draw it to surface
-        image = pg.image.load(self.path).convert()# pygame.surface
+        image = pg.image.load(self.path)# pygame.surface
         pg.Surface.__init__(# pygame.surface
             self,
             image.get_rect().size,

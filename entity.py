@@ -10,7 +10,26 @@ from .utils import (
 from .zrect import ZRect
 from .animation import Animation
 import pygame as pg
-eval
+# classes
+class Entity(pg.sprite.Sprite):
+    """Every form of ingame agency will be based of this class."""
+    # default values
+    default = {
+        "filepath": PATH["sysimg"],
+        "filename": "noimage.png",
+        }
+    def __init__(self, config={}):
+        """Constructor."""
+        self.config = validateDict(config, self.default)# dict
+        pg.sprite.Sprite.__init__(self)
+        self.path = "{0}\\{1}".format(# str
+            self.config["filepath"],
+            self.config["filename"]
+            )
+        self.image = pg.Surface((50, 50), pg.SRCALPHA)
+    def __repr__(self):# str
+        """String representation."""
+        return "<Entity()>"
 
 class Player(pg.sprite.Sprite):
     """Representing a playable character."""
@@ -18,6 +37,8 @@ class Player(pg.sprite.Sprite):
     default = {
         "name": "Player1",
         "image": "noimage.png",
+        "filepath": PATH["sysimg"],
+        "filename": "noimage.png",
         "framesize": [50, 50],
         "speed": 1,
         "border": None,
@@ -31,11 +52,9 @@ class Player(pg.sprite.Sprite):
         self.config = validateDict(config, self.default)# dict
         self.name = self.config["name"]# str
         # no-image exception
-        if self.config["image"] == "noimage.png":
-            self.path = PATH["sysimg"]# str
-        else:
-            self.path = "{0}\\{1}".format(PATH["identities"], self.name)# str
-
+        self.path = "{0}".format(# str
+            self.config["filepath"]
+            )
         self.imagepath = self.path + "\\" + self.config["image"]# str
         self.rawimage = pg.image.load(self.imagepath)# pygame.surface
         self.framesize = self.config["framesize"]# tuple
@@ -170,16 +189,12 @@ class Player(pg.sprite.Sprite):
                     self.image,
                     pg.Rect(self.config["collisionbox"]).topleft
                 )
-class NPC(pg.sprite.Sprite):
+class NPC(Entity):
     """Representing a not-playable character."""
-    # default values
-    default = {
-
-        }
     def __init__(self, config={}):
         """Constructor."""
-        self.image = pg.Surface((50, 50), pg.SRCALPHA)
-        self.image.fill((255, 255, 255))
+        Entity.__init__(self, config)# entity
+
     def __repr__(self):# str
         """String representation."""
         return "<NPC()>"

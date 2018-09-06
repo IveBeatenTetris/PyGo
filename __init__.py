@@ -11,7 +11,7 @@ from .window import Window
 from .camera import Camera
 from .assetloader import AssetLoader
 from .animation import Animation
-from .player import Player, NPC
+from .entity import Player, NPC
 from .map import Map
 from .tileset import Tileset
 from .tile import Tile

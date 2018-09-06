@@ -82,7 +82,7 @@ class Window:
         """Resize the window and update it's rect."""
         self.display = getDisplay(# pygame surface
             size,
-            resizable = self.resizable
+            resizable=self.resizable
             )
         self.rect = self.display.get_rect()
         self.bg = createBackground(self.background, self.rect, self.backgroundrepeat)
@@ -99,7 +99,7 @@ class Window:
 
             # scaling the game screen
             if event.type is pg.MOUSEBUTTONDOWN and event.button == 4:
-                #self.zoom += 1
+                # self.zoom += 1
                 pass
             if event.type is pg.MOUSEBUTTONDOWN and event.button == 5:
                 # self.zoom -= 1

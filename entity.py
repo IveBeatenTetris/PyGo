@@ -7,7 +7,7 @@ from .utils import (
     drawBorder,
     getPressedKeys
     )
-from .zrect import ZRect
+# from .zrect import ZRect
 from .animation import Animation
 import pygame as pg
 # classes

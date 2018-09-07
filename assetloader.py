@@ -17,6 +17,7 @@ class AssetLoader:
         self.entities = self.get("entities")# collection
         self.tilesets = self.get("tilesets")# collection
         self.maps = self.get("maps")# collection
+        self.behaviors = self.get("behaviors")# collection
     def __str__(self):# str
         """String representation."""
         list = []
@@ -39,6 +40,7 @@ class AssetLoader:
         assets = loadAssets(self.path + "\\" + assetname)
 
         for asset in assets:
-            collection.add({asset["name"]: asset})
+            #collection.add({asset["name"]: asset})
+            collection.add({asset["filename"].split(".")[0]: asset})
 
         return collection

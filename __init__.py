@@ -4,8 +4,6 @@ Speed up your coding process by accessing a 'pygame'-wrapper and code around
 the standard pygame library.
 """
 
-
-
 from .utils import *
 from .collection import Collection
 from .zrect import ZRect

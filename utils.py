@@ -80,6 +80,7 @@ def loadAssets(path):# list
         for each in dirs[2]:
             if each.split(".")[1] == "json":
                 config = loadJSON(dirs[0] + "\\" + each)
+                config.update({"filename": each})
                 list.append(config)
             # if directory has an image
             elif each.split(".")[1] == "png":

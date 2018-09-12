@@ -13,7 +13,6 @@ import pygame as pg
 # classes
 class Entity(pg.sprite.Sprite):
     """Every form of ingame agency will be based of this class."""
-    # default values
     default = {
         "name": "NoName",
         "image": "noimage.png",
@@ -24,7 +23,11 @@ class Entity(pg.sprite.Sprite):
         "border": None,
         # "border": [1, "solid", [255, 0, 0]],
         "animationspeed": 25,
-        "collisionbox": None
+        "collisionbox": None,
+        "states": {
+            "idle": "idle",
+            "moving": "moving"
+            }
         }
     def __init__(self, config={}):
         """Constructor."""
@@ -74,7 +77,10 @@ class Entity(pg.sprite.Sprite):
             self.config["collisionbox"] = pg.Rect(self.collisionbox)# pygame.rect
     def __repr__(self):# str
         """String representation."""
-        return "<Entity()>"
+        return "<Entity>"
+    def update(self):
+        """Run this method with each main loop tick."""
+        pass
 class NPC(Entity):
     """Representing a not-playable character."""
     def __init__(self, config):
@@ -82,12 +88,12 @@ class NPC(Entity):
         Entity.__init__(self, config)# entity
     def __repr__(self):# str
         """String representation."""
-        return "<NPC()>"
+        return "<NPC>"
 class Player(Entity):
     """Representing a playable character."""
     def __init__(self, config={}):
         """Constructor."""
-        Entity.__init__(self, config)# entity
+        Entity.__init__(self, config)
         self.rect = ZRect(self.image.get_rect())# pgzero.zrect
     def __repr__(self):# str
         """String representation."""
